@@ -43,15 +43,21 @@ class Hypothesis():
 			self.shape=shape
 			self.hypothesis[self.n_colors*shape+color]=1
 		elif self.kind==5: #shape OR color
+			self.color=color
+			self.shape=shape
 			for j in range(self.n_shapes):
 				self.hypothesis[j*self.n_colors+color]=1
 			for i in range(self.n_colors):
 				self.hypothesis[self.n_colors*shape+i]=1
 		elif self.kind==6: #color OR color2
+			self.color=color
+			self.color2=color2
 			for j in range(self.n_shapes):
 				self.hypothesis[j*self.n_colors+color]=1
 				self.hypothesis[j*self.n_colors+color2]=1
 		elif self.kind==7: #shape OR shape2
+			self.shape=shape
+			self.shape2=shape2
 			for i in range(self.n_colors):
 				self.hypothesis[self.n_colors*shape+i]=1
 				self.hypothesis[self.n_colors*shape2+i]=1
@@ -112,8 +118,8 @@ class Hypothesis():
 
 			elif self.kind==5:
 				if ((self.shape==datapoint.toy_shape or self.color==datapoint.toy_color)\
-					and datpoint.active) or \
-					((self.shape!=datapoint.toy_shape and self.color!=datatpoint.toy_color)\
+					and datapoint.active) or \
+					((self.shape!=datapoint.toy_shape and self.color!=datapoint.toy_color)\
 					and not datapoint.active):
 					return True
 				else:

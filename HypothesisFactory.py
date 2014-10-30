@@ -49,6 +49,6 @@ class HypothesisFactory():
 		return all_hypotheses
 
 
-	def n_hypotheses(self):
-		return len(self.create_all_hypotheses())
-	
+	def n_hypotheses(self, machine):
+		return len(self.create_all_hypotheses(machine))
+
