@@ -1,14 +1,14 @@
 
 import HypothesisFactory
-import parameters
+import world
 
 
 class Theory():
 
 	def __init__(self, kind):
 		self.kind=kind
-		self.n_theories=parameters.n_theories
-		self.machines=parameters.machines
+		self.n_theories=world.n_theories
+		self.machines=world.machines
 		self.hf=HypothesisFactory.HypothesisFactory()
 
 	def unnormalized_posterior(self, data=None):
@@ -87,13 +87,13 @@ class Theory():
 
 		elif self.kind==9: #NOT match color
 			if hypothesis.kind==2 and hypothesis.color!=hypothesis.machine[0]:
-				return 1./(parameters.n_colors-1)
+				return 1./(world.n_colors-1)
 			else:
 				return 0
 		
 		elif self.kind==10: #NOT match shape
 			if hypothesis.kind==3 and hypothesis.shape!=hypothesis.machine[1]:
-				return 1./(parameters.n_shapes-1)
+				return 1./(world.n_shapes-1)
 			else:
 				return 0
 

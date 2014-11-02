@@ -1,7 +1,30 @@
 
+import Datapoint
 
-colors=['red', 'blue', 'green']
+colors=['red', 'green', 'blue']
 shapes=['rectangle', 'circle', 'triangle']
+
+
+n_colors=len(colors)
+n_shapes=len(shapes)
+
+#likelihood noise
+epsilon=1e-3
+
+n_theories=12
+
+#machines=[(2,0), (1,1), (0,2)]
+machines=[('blue', 'rectangle'), ('green', 'circle'), ('red', 'triangle')]
+available_toys=[('blue', 'circle'), ('red', 'rectangle'), ('green', 'triangle')]
+
+
+def possible_data(action):
+	return [Datapoint.Datapoint(action, False), Datapoint.Datapoint(action, True)]
+
+def possible_actions():
+	return [(t,m) for t in available_toys for m in machines]
+
+
 
 def translate_clause(clause):
 	if len(clause)==1:

@@ -3,7 +3,8 @@ import HypothesisFactory
 import Theory
 import Hypothesis
 import Datapoint
-import parameters
+import world
+#import parameters
 
 h0=Hypothesis.Hypothesis((0,0),2,0)
 h1=Hypothesis.Hypothesis((1,0),2,0)
@@ -14,13 +15,22 @@ t_col=Theory.Theory(2)
 t_sha=Theory.Theory(3)
 t_indep=Theory.Theory(11)
 
-dat_col=[Datapoint.Datapoint(parameters.machines[0],2,1,True),\
-		Datapoint.Datapoint(parameters.machines[1],1,2,True)]
-dat_sha=[Datapoint.Datapoint(parameters.machines[0],0,0,True),\
-		Datapoint.Datapoint(parameters.machines[1],2,1,True)]
+# dat_col=[Datapoint.Datapoint(parameters.machines[0],(2,1),True),\
+# 		Datapoint.Datapoint(parameters.machines[1],(1,2),True)]
+# dat_sha=[Datapoint.Datapoint(parameters.machines[0],(0,0),True),\
+# 		Datapoint.Datapoint(parameters.machines[1],(2,1),True)]
 
-dat_indep=[Datapoint.Datapoint(parameters.machines[0],2,1,True),\
-		Datapoint.Datapoint(parameters.machines[1],2,1,True)]
+# dat_indep=[Datapoint.Datapoint(parameters.machines[0],(2,1),True),\
+# 		Datapoint.Datapoint(parameters.machines[1],(2,1),True)]
+
+dat_col=[Datapoint.Datapoint((world.available_toys[0],world.machines[0]),True),\
+		Datapoint.Datapoint((world.available_toys[2],world.machines[1]),True)]
+
+dat_sha=[Datapoint.Datapoint((world.available_toys[1],world.machines[0]),True),\
+		Datapoint.Datapoint((world.available_toys[0],world.machines[1]),True)]
+
+dat_indep=[Datapoint.Datapoint((world.available_toys[0],world.machines[0]),True),\
+		Datapoint.Datapoint((world.available_toys[0],world.machines[1]),True)]
 
 
 
@@ -40,9 +50,9 @@ print t_col.unnormalized_posterior(dat_indep), t_sha.unnormalized_posterior(dat_
 
 
 # h=Hypothesis.Hypothesis((0,0), 5, color=0, shape=0)
-# h.display()
-hf=HypothesisFactory.HypothesisFactory()
-allh00=hf.create_all_hypotheses((0,0))
+# # h.display()
+# hf=HypothesisFactory.HypothesisFactory()
+# allh00=hf.create_all_hypotheses((0,0))
 
 # print len(allh00)
 
@@ -61,14 +71,15 @@ allh00=hf.create_all_hypotheses((0,0))
 # #hs5[0].display()
 # print hs5[0].shape,hs5[0].color
 
-#11 test
-print "\n new test"
-t=Theory.Theory(9)
+# #11 test
+# print "\n new test"
+# t=Theory.Theory(9)
 
-for h in allh00:
-	if t.hypothesis_likelihood(h)>0:
-		h.display()
-		print t.hypothesis_likelihood(h)
+# for h in allh00:
+# 	if t.hypothesis_likelihood(h)>0:
+# 		h.display()
+# 		print t.hypothesis_likelihood(h)
+
 
 
 

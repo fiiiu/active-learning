@@ -1,6 +1,7 @@
 
+import itertools
 import Hypothesis
-import parameters
+import world
 
 class HypothesisFactory():
 
@@ -14,37 +15,46 @@ class HypothesisFactory():
 		
 		all_hypotheses.append(Hypothesis.Hypothesis(machine, 1))
 		
-		for color in range(parameters.n_colors):
+		for color in world.colors:
 			all_hypotheses.append(Hypothesis.Hypothesis(machine, 2, color=color))
 		
-		for shape in range(parameters.n_shapes):
+		for shape in world.shapes:
 			all_hypotheses.append(Hypothesis.Hypothesis(machine, 3, shape=shape))
 		
-		for color in range(parameters.n_colors):
-			for shape in range(parameters.n_shapes):
+		for color in world.colors:
+			for shape in world.shapes:
 				all_hypotheses.append(Hypothesis.Hypothesis(machine, 4, color=color,\
 				 shape=shape))
 
-		for color in range(parameters.n_colors):
-			for shape in range(parameters.n_shapes):
+		for color in world.colors:
+			for shape in world.shapes:
 				all_hypotheses.append(Hypothesis.Hypothesis(machine, 5, color=color,\
 				 shape=shape))
 
-		for color in range(parameters.n_colors):
-			for color2 in range(color, parameters.n_colors):
-				if color==color2:
-					continue
-				else:
-					all_hypotheses.append(Hypothesis.Hypothesis(machine, 6, color=color,\
-				 color2=color2))
+		# for color in world.colors:
+		# 	for color2 in range(color, world.n_colors):
+		# 		if color==color2:
+		# 			continue
+		# 		else:
+		# 			all_hypotheses.append(Hypothesis.Hypothesis(machine, 6, color=color,\
+		# 		 color2=color2))
 
-		for shape in range(parameters.n_shapes):
-			for shape2 in range(shape, parameters.n_shapes):
-				if shape==shape2:
-					continue
-				else:
-					all_hypotheses.append(Hypothesis.Hypothesis(machine, 7, shape=shape,\
+		for color, color2 in itertools.combinations(world.colors,2):
+			all_hypotheses.append(Hypothesis.Hypothesis(machine, 6, color=color,\
+				 color2=color2)) 
+
+		# for shape in world.shapes:
+		# 	for shape2 in range(shape, world.n_shapes):
+		# 		if shape==shape2:
+		# 			continue
+		# 		else:
+		# 			all_hypotheses.append(Hypothesis.Hypothesis(machine, 7, shape=shape,\
+		# 		 shape2=shape2))
+
+		for shape, shape2 in itertools.combinations(world.shapes,2):
+			all_hypotheses.append(Hypothesis.Hypothesis(machine, 7, shape=shape,\
 				 shape2=shape2))
+
 
 		return all_hypotheses
 

@@ -6,14 +6,14 @@
 #[ shape0 color0, shape0 color1, .. , shape1 color0, .. ]
 
 import scipy.misc
-import parameters
+import world
 import Datapoint
 
 class Hypothesis():
 
 	def __init__(self, machine, kind, color=None, color2=None, shape=None, shape2=None):
-		self.n_colors=parameters.n_colors
-		self.n_shapes=parameters.n_shapes
+		self.n_colors=world.n_colors
+		self.n_shapes=world.n_shapes
 		self.hypothesis=[0]*self.n_colors*self.n_shapes
 		self.machine=machine
 		self.kind=kind
@@ -26,41 +26,41 @@ class Hypothesis():
 		print self.hypothesis
 
 	def initialize(self, color, color2, shape, shape2):
-		if self.kind==0: #none
-			pass #return hyp
-		elif self.kind==1: #any
-			self.hypothesis=[1]*self.n_colors*self.n_shapes
-		elif self.kind==2: #color fixed
+		#if self.kind==0: #none
+		#	pass #return hyp
+		#elif self.kind==1: #any
+		#	self.hypothesis=[1]*self.n_colors*self.n_shapes
+		if self.kind==2: #color fixed
 			self.color=color
-			for j in range(self.n_shapes):
-				self.hypothesis[j*self.n_colors+color]=1
+		#	for j in range(self.n_shapes):
+		#		self.hypothesis[j*self.n_colors+color]=1
 		elif self.kind==3: #shape fixed
 			self.shape=shape
-			for i in range(self.n_colors):
-				self.hypothesis[self.n_colors*shape+i]=1
+		#	for i in range(self.n_colors):
+		#		self.hypothesis[self.n_colors*shape+i]=1
 		elif self.kind==4: #shape AND color
 			self.color=color
 			self.shape=shape
-			self.hypothesis[self.n_colors*shape+color]=1
+		#	self.hypothesis[self.n_colors*shape+color]=1
 		elif self.kind==5: #shape OR color
 			self.color=color
 			self.shape=shape
-			for j in range(self.n_shapes):
-				self.hypothesis[j*self.n_colors+color]=1
-			for i in range(self.n_colors):
-				self.hypothesis[self.n_colors*shape+i]=1
+		#	for j in range(self.n_shapes):
+		#		self.hypothesis[j*self.n_colors+color]=1
+		#	for i in range(self.n_colors):
+		#		self.hypothesis[self.n_colors*shape+i]=1
 		elif self.kind==6: #color OR color2
 			self.color=color
 			self.color2=color2
-			for j in range(self.n_shapes):
-				self.hypothesis[j*self.n_colors+color]=1
-				self.hypothesis[j*self.n_colors+color2]=1
+		#	for j in range(self.n_shapes):
+		#		self.hypothesis[j*self.n_colors+color]=1
+		#		self.hypothesis[j*self.n_colors+color2]=1
 		elif self.kind==7: #shape OR shape2
 			self.shape=shape
 			self.shape2=shape2
-			for i in range(self.n_colors):
-				self.hypothesis[self.n_colors*shape+i]=1
-				self.hypothesis[self.n_colors*shape2+i]=1
+		#	for i in range(self.n_colors):
+		#		self.hypothesis[self.n_colors*shape+i]=1
+		#		self.hypothesis[self.n_colors*shape2+i]=1
 
 
 	def prior(self, theory=None):
@@ -84,7 +84,7 @@ class Hypothesis():
 		if self.is_consistent(datapoint):
 			return 1
 		else:
-			return parameters.epsilon
+			return world.epsilon
 
 	def is_consistent(self, datapoint):
 		if self.machine != datapoint.machine:
