@@ -1,5 +1,6 @@
 
 import ActiveLearner
+import JointLearner
 import Datapoint
 import world
 import model
@@ -18,10 +19,16 @@ dat_indep=[Datapoint.Datapoint((world.available_toys[0],world.machines[0]),True)
 
 
 al=ActiveLearner.ActiveLearner()
+jl=JointLearner.JointLearner()
 
 print al.choose_action(dat_col)
 print al.choose_action(dat_sha)
 print al.choose_action(dat_indep)
+
+
+print jl.choose_action(dat_col)
+print jl.choose_action(dat_sha)
+print jl.choose_action(dat_indep)
 
 
 

@@ -7,7 +7,6 @@ class Theory():
 
 	def __init__(self, kind):
 		self.kind=kind
-		self.n_theories=world.n_theories
 		self.machines=world.machines
 		self.hf=HypothesisFactory.HypothesisFactory()
 
@@ -31,7 +30,7 @@ class Theory():
 
 
 	def prior(self):
-		return 1.0/self.n_theories
+		return 1.0
 
 	def hypothesis_likelihood(self, hypothesis):
 		

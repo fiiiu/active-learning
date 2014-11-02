@@ -27,3 +27,8 @@ def H(p, support):
             entropy-=np.log2(prob)*prob
 
     return entropy
+
+
+
+
+    

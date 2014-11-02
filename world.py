@@ -11,7 +11,6 @@ n_shapes=len(shapes)
 #likelihood noise
 epsilon=1e-3
 
-n_theories=12
 
 #machines=[(2,0), (1,1), (0,2)]
 machines=[('blue', 'rectangle'), ('green', 'circle'), ('red', 'triangle')]
