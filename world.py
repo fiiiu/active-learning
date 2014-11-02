@@ -14,8 +14,13 @@ epsilon=1e-3
 
 #machines=[(2,0), (1,1), (0,2)]
 machines=[('blue', 'rectangle'), ('green', 'circle'), ('red', 'triangle')]
+
 available_toys=[('blue', 'circle'), ('red', 'rectangle'), ('green', 'triangle')]
 
+#small world
+colors=['green', 'blue']
+shapes=['rectangle', 'circle']
+machines=[('blue', 'rectangle'), ('green', 'circle')]
 
 def possible_data(action):
 	return [Datapoint.Datapoint(action, False), Datapoint.Datapoint(action, True)]
