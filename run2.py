@@ -1,6 +1,8 @@
 
-import ActiveLearner
-import JointLearner
+# import TheoryLearner
+# import JointLearner
+# import RandomLearner
+import learners
 import Datapoint
 import world
 import model
@@ -18,17 +20,25 @@ dat_indep=[Datapoint.Datapoint((world.available_toys[0],world.machines[0]),True)
 		Datapoint.Datapoint((world.available_toys[0],world.machines[1]),True)]
 
 
-al=ActiveLearner.ActiveLearner()
-jl=JointLearner.JointLearner()
+tl=learners.TheoryLearner()
+jl=learners.JointLearner()
+rl=learners.RandomLearner()
 
-print al.choose_action(dat_col)
-print al.choose_action(dat_sha)
-print al.choose_action(dat_indep)
+print 'RandomLearner'
+print rl.choose_action(dat_col)
+print rl.choose_action(dat_sha)
+print rl.choose_action(dat_indep)
 
+print 'TheoryLearner'
+print tl.choose_action(dat_col)
+print tl.choose_action(dat_sha)
+print tl.choose_action(dat_indep)
 
+print 'JointLearner'
 print jl.choose_action(dat_col)
 print jl.choose_action(dat_sha)
 print jl.choose_action(dat_indep)
+
 
 
 

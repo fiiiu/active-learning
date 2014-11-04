@@ -3,8 +3,10 @@ class Datapoint():
 
 	def __init__(self, action, active):
 		
-		self.toy=action[0]
-		self.machine=action[1]
+		self.action=action
+
+		self.toy=self.action[0]
+		self.machine=self.action[1]
 
 		self.machine_color=self.machine[0]
 		self.machine_shape=self.machine[1]
@@ -24,3 +26,5 @@ class Datapoint():
 
 	def display(self):
 		print "toy: {0}, machine: {1}, active: {2}".format(self.toy, self.machine, self.active)
+
+		

@@ -1,26 +1,35 @@
 
 import Datapoint
 
-colors=['red', 'green', 'blue']
-shapes=['rectangle', 'circle', 'triangle']
+# colors=['red', 'green', 'blue']
+# shapes=['rectangle', 'circle', 'triangle']
+
+
+#machines=[(2,0), (1,1), (0,2)]
+# machines=[('blue', 'rectangle'), ('green', 'circle'), ('red', 'triangle')]
+# available_toys=[('blue', 'circle'), ('red', 'rectangle'), ('green', 'triangle')]
+
+#small world
+# colors=['green', 'blue']
+# shapes=['rectangle', 'circle']
+# machines=[('blue', 'rectangle'), ('green', 'circle')]
+# available_toys=[()]
+
+colors=['G', 'B', 'R']
+shapes=['R', 'T', 'C']
+machines=[('B', 'R'), ('G', 'C'), ('R', 'T')]
+available_toys=[('B', 'C'), ('R', 'R'), ('G', 'T')]
+
+colors=[0,1,2]
+shapes=[0,1,2]
+machines=[(2,0), (1,1), (0,2)]
+available_toys=[(2,1), (0,0), (1,2)]
 
 
 n_colors=len(colors)
 n_shapes=len(shapes)
+n_machines=len(machines)
 
-#likelihood noise
-epsilon=1e-3
-
-
-#machines=[(2,0), (1,1), (0,2)]
-machines=[('blue', 'rectangle'), ('green', 'circle'), ('red', 'triangle')]
-
-available_toys=[('blue', 'circle'), ('red', 'rectangle'), ('green', 'triangle')]
-
-#small world
-colors=['green', 'blue']
-shapes=['rectangle', 'circle']
-machines=[('blue', 'rectangle'), ('green', 'circle')]
 
 def possible_data(action):
 	return [Datapoint.Datapoint(action, False), Datapoint.Datapoint(action, True)]
