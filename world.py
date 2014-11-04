@@ -30,6 +30,8 @@ n_colors=len(colors)
 n_shapes=len(shapes)
 n_machines=len(machines)
 
+condition='color'
+
 
 def possible_data(action):
 	return [Datapoint.Datapoint(action, False), Datapoint.Datapoint(action, True)]
@@ -37,6 +39,11 @@ def possible_data(action):
 def possible_actions():
 	return [(t,m) for t in available_toys for m in machines]
 
+def make_action(action):
+	if condition=='color':
+		return Datapoint.Datapoint(action, action[0][0]==action[1][0])
+	elif condition=='shape':
+		return Datapoint.Datapoint(action, action[0][1]==action[1][1])
 
 
 def translate_clause(clause):

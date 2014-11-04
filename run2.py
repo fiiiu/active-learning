@@ -5,7 +5,7 @@
 import learners
 import Datapoint
 import world
-import model
+import newmodel as model
 
 # dat_col=[Datapoint.Datapoint((world.machines[0],(2,1)),True),\
 # 		Datapoint.Datapoint((world.machines[1],(1,2)),True)]

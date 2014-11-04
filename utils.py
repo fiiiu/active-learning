@@ -19,6 +19,7 @@ def H(p):
 def H(p, support):
     """
     Return the Shannon entropy of a distribution given as a function and its discrete support
+    MUST BE NORMALIZED
     """
     entropy=0
     for x in support:
