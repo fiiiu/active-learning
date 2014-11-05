@@ -1,11 +1,12 @@
 
 import Datapoint
 import csv
+import parameters
 
 class Data():
 
 	def __init__(self):
-		self.filename='/Users/alejo/Neuro/ActiveLearning/Data/CPF2_Transcribed110214-2.csv'
+		self.filename=parameters.directory+'Data/CPF2_Transcribed110214-2.csv'
 		self.data={}
 
 	def read(self, filter=True, astext=True):

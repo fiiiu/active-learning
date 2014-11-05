@@ -19,7 +19,7 @@ def main(player):
 	data=Data.Data()
 	data.read(astext=False)
 	n_kids=parameters.n_kids
-	truncate=parameters.n_truncate
+	truncate=parameters.truncate
 	n_r_theo=parameters.n_r_theo
 	n_r_random=parameters.n_r_random
 
