@@ -1,8 +1,10 @@
 
 import utils
-import newmodel as model
+#import newmodel as model
 import world
 
+import high_model
+import low_model
 
 def ave_theory_expected_entropy(sequence):
 	jumps=0
@@ -30,7 +32,7 @@ def theory_expected_final_entropy(action, data=None):
 		alldata=[d] if data is None else [d]+data
 		#print utils.H(lambda t: model.p_theory_data(t, alldata), model.t_space)
 		#print 'p_d_a', model.p_data_action(d,action,data)
-		expval+=utils.H(lambda t: model.p_theory_data(t, alldata), model.t_space)*\
+		expval+=utils.H(lambda t: model.p_theory_data(t, alldata, normalized=True), model.t_space)*\
 				model.p_data_action(d,action,data)
 
 	# print action, data, expval/norm

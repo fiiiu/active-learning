@@ -1,7 +1,6 @@
 
 import random
 import utils
-#import model
 import world
 import entropy_gains
 

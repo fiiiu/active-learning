@@ -48,9 +48,9 @@ def p_hypothesis_data(h, m, d=None):
 	if d is None:
 		return p_hypothesis(h,m)
 	else:
-		norm=sum([p_data_hypothesis(d,h,m)*p_hypothesis(h,m) for h in singleh_space for m in machines])
+		#norm=sum([p_data_hypothesis(d,h,m)*p_hypothesis(h,m) for h in singleh_space for m in machines])
 		#print 'norm ', norm
-		return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)/norm
+		return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
 
 def p_hypothesis(h,m):
 	prob=0
@@ -59,12 +59,15 @@ def p_hypothesis(h,m):
 	return prob
 
 
-def p_theory_data(t, d=None):
+def p_theory_data(t, d=None, normalized=False):
 	if d is None:
 		return p_theory(t)
 	else:
-		norm=sum([p_data_theory(d,t)*p_theory(t) for t in t_space])
-		return p_data_theory(d,t)*p_theory(t)/norm
+		if normalized:
+			norm=sum([p_data_theory(d,tt)*p_theory(tt) for tt in t_space])
+			return p_data_theory(d,t)*p_theory(t)/norm
+		else:
+			return p_data_theory(d,t)*p_theory(t)
 
 
 def p_theory(t): #flat prior: argument ignored
@@ -155,20 +158,20 @@ def produce_hypothesis(h):
 
 def p_hypothesis_theory(h, m, t):
 	if t==0:
-		return int(h==0)
+		return float(h==0)
 	
 	elif t==1:
-		return int(h==1)
+		return float(h==1)
 
 	elif t==2: #color match
 		if 0 <= h-2 < n_colors: # 2 <= h < 2+n_colors
-			return int(h-t == m[0])
+			return float(h-t == m[0])
 		else:
 			return 0
 	
 	elif t==3: #shape match
 		if 0 <= h-2-n_colors < n_shapes:
-			return int(h-2-n_colors == m[1])
+			return float(h-2-n_colors == m[1])
 		else:
 			return 0
 
@@ -177,7 +180,7 @@ def p_hypothesis_theory(h, m, t):
 			offset=2+n_colors+n_shapes
 			color=(h-offset) % n_colors
 			shape=(h-offset) / n_colors
-			return int(color==m[0] and shape==m[1])
+			return float(color==m[0] and shape==m[1])
 		else:
 			return 0
 
@@ -186,7 +189,7 @@ def p_hypothesis_theory(h, m, t):
 			offset=2+n_colors+n_shapes+n_colors*n_shapes
 			color=(h-offset) % n_colors
 			shape=(h-offset) / n_colors
-			return int(color==m[0] or shape==m[1])
+			return float(color==m[0] and shape==m[1])
 		else:
 			return 0
 
