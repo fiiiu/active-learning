@@ -16,9 +16,12 @@ class ActiveLearner(object):
 		for a in world.possible_actions():
 			this_gain=self.expected_final_entropy(a, prev_data)
 			#print a, this_gain
-			if this_gain <= mingain:
-				astars.append(a)
+			if this_gain < mingain:
+				#astars.append(a)
+				astars=[a]
 				mingain=this_gain
+			elif this_gain == mingain:
+				astars.append(a)
 		choice=random.choice(astars)
 		self.experience.append(world.make_action(choice))
 		return choice
