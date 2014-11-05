@@ -1,5 +1,5 @@
 
-
+import Data
 import entropy_gains
 import test_data
 import high_model
@@ -28,6 +28,12 @@ hposs=[0]*12
 lposi=[0]*12
 hposi=[0]*12
 
+data=Data.Data()
+data.read(astext=False)
+dind=data.data[data.get_kids()[0]]
+
+[d.display() for d in dind]
+
 norm=True
 lostart=time.clock()
 for t in range(12):
@@ -38,10 +44,11 @@ for t in range(12):
 lotime=time.clock()-lostart
 
 histart=time.clock()
-for t in range(12):
-	hposc[t]=high_model.p_theory_data(t, dcol, normalized=norm)
-	hposs[t]=high_model.p_theory_data(t, dsha, normalized=norm)
-	hposi[t]=high_model.p_theory_data(t, dind, normalized=norm)
+for ti in range(12):
+	t=high_model.Theory(ti)
+	#hposc[ti]=high_model.p_theory_data(t, dcol, normalized=norm)
+	#hposs[ti]=high_model.p_theory_data(t, dsha, normalized=norm)
+	hposi[ti]=high_model.p_theory_data(t, dind, normalized=norm)
 	#lpos[t]=low_model.p_data_theory([], t)
 	#hpos[t]=high_model.p_data_theory([], t)
 hitime=time.clock()-histart
@@ -57,9 +64,9 @@ print 'lotime: {0}, hitime: {1}'.format(lotime,hitime)
 # print "shape_ "
 # for t in range(12):
 # 	print "t: {0}, low: {1:.3f}, high: {2:.3f}, ratio: {3:.3f}".format(t,lposs[t], hposs[t], lposs[t]/hposs[t])
-# print "indep_ "
-# for t in range(12):
-# 	print "t: {0}, low: {1:.3f}, high: {2:.3f}, ratio: {3:.3f}".format(t,lposi[t], hposi[t], lposi[t]/hposi[t])
+print "indep_ "
+for t in range(12):
+	print "t: {0}, low: {1:.3f}, high: {2:.3f}, ratio: {3:.3f}".format(t,lposi[t], hposi[t], lposi[t]/hposi[t])
 
 
 

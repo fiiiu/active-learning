@@ -15,9 +15,7 @@ class ActiveLearner(object):
 		astars=[]
 		for a in world.possible_actions():
 			this_gain=self.expected_final_entropy(a, prev_data)
-			#print a, this_gain
 			if this_gain < mingain:
-				#astars.append(a)
 				astars=[a]
 				mingain=this_gain
 			elif this_gain == mingain:
@@ -36,10 +34,8 @@ class RandomLearner(ActiveLearner):
 	"""docstring for RandomLearner"""
 	def __init__(self):
 		super(RandomLearner, self).__init__()
-		#self.model = Model.Model()
 		
-	#def choose_action(self, prev_data=None):
-	#	return random.choice(world.possible_actions())
+		
 	def expected_final_entropy(self, action, data=None):
 		return 0 #all equivalent!
 
@@ -48,7 +44,7 @@ class TheoryLearner(ActiveLearner):
 	"""docstring for TheoryLearner"""
 	def __init__(self):
 		super(TheoryLearner, self).__init__()
-		#self.model = Model.Model()
+		
 	
 	def expected_final_entropy(self, action, data=None):
 		#print entropy_gains.theory_entropy_gain(action, data)

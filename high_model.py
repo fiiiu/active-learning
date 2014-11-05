@@ -190,9 +190,9 @@ class Hypothesis():
 			return True
 		else:
 			if self.kind==0:
-				return False
+				return not datapoint.active
 			elif self.kind==1:
-				return True
+				return datapoint.active
 			elif self.kind==2:
 				if (self.color==datapoint.toy_color and datapoint.active) or\
 					(self.color!=datapoint.toy_color and not datapoint.active):
@@ -304,8 +304,8 @@ th_space=[(t, h) for t in t_space for h in all_hypotheses]
 
 
 
-def p_theory_data(t, data=None, normalized=False):
-	theory=Theory(t)
+def p_theory_data(theory, data=None, normalized=False):
+	#theory=Theory(t)
 	if normalized:
 		norm=sum([tt.unnormalized_posterior(data) for tt in t_space])
 		return theory.unnormalized_posterior(data)/norm

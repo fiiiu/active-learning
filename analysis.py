@@ -1,11 +1,12 @@
 
 import sys
 import matplotlib.pyplot as plt
+import numpy as np
 import Data
 import entropy_gains
 import learners
 import world
-
+import numpy
 
 # for kid in data.get_kids():
 # 	print "Kid {0}: {1}, RandomLearner: {2}, TheoryLearner: {3}".format(kid, keg, reg, teg)
@@ -16,11 +17,16 @@ def main(player):
 	data.read(astext=False)
 	truncate=50
 
+
+
 	if player=='kids':
 		for kid in data.get_kids():
 			kidseq=data.data[kid][:truncate]
 			keg=entropy_gains.ave_theory_expected_entropy_gain(kidseq)[0]
 			print kid, keg
+			#nkegs
+
+
 
 	elif player=='random':
 		rl=learners.RandomLearner()
