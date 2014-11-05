@@ -30,14 +30,14 @@ class Data():
 			machine_shape=entry[1] if entry[1]!='L' else 'C'
 			toy_color=entry[4] if entry[4]!='O' else 'G'
 			toy_shape=entry[5] if entry[1]!='L' else 'C'
-			active=entry[6]==1
+			active=(entry[6]=='1')
 			return Datapoint.Datapoint(((toy_color,toy_shape),(machine_color, machine_shape)),active)
 		else:
 			machine_color=self.to_int(entry[0]) if entry[0]!='O' else self.to_int('G') 
 			machine_shape=self.to_int(entry[1]) if entry[1]!='L' else self.to_int('C')
 			toy_color=self.to_int(entry[4]) if entry[4]!='O' else self.to_int('G')
 			toy_shape=self.to_int(entry[5]) if entry[5]!='L' else self.to_int('C')
-			active=entry[6]==1
+			active=entry[6]=='1'
 			return Datapoint.Datapoint(((toy_color,toy_shape),(machine_color, machine_shape)),active)
 
 
