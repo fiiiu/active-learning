@@ -63,11 +63,11 @@ def main(player):
 			eg[k]/=n_r
 
 
-	filename='Output/out-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
+	filename='Output/out-HIGH-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
 	np.savetxt(filename, eg)
 
 	if player in ['random', 'theory']:
-		filenameall='Output/all-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
+		filenameall='Output/all-HIGH-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
 		np.savetxt(filenameall, egall)
 	
 	print 'time elapsed for run {0}: {1:.0f} s'.format(filename, time.clock()-starttime)

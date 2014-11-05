@@ -6,7 +6,7 @@ import world
 import high_model
 import low_model
 
-model=low_model
+model=high_model
 
 
 def ave_theory_expected_entropy_gain(sequence):
