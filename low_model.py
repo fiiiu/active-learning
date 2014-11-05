@@ -38,7 +38,8 @@ def p_data_action(datapoint, action, prev_data=None):
 			#for h in hf.create_all_hypotheses(machine):
 			for h in singleh_space:
 				pda+=p_singledata_hypothesis(datapoint, h, machine)*\
-				     p_hypothesis_data(h, machine, prev_data)
+					 p_hypothesis_theory(h,machine,t)*p_theory(t)
+				     #p_hypothesis_data(h, machine, prev_data)
 				#pda+=h.single_likelihood(datapoint)*h.unnormalized_posterior(prev_data)
 		return pda#float(pda)/len(world.possible_data(action))
 	else:

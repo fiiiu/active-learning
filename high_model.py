@@ -171,12 +171,13 @@ class Hypothesis():
 		for datapoint in data:
 			lik*=self.single_likelihood(datapoint)
 		return lik
-			
-	def unnormalized_posterior(self, data=None):
-		if data is None:
-			return self.prior()
-		else:
-			return self.likelihood(data)*self.prior()
+	
+	#I shouldn't be calling this!! :)		
+	# def unnormalized_posterior(self, data=None):
+	# 	if data is None:
+	# 		return self.prior()
+	# 	else:
+	# 		return self.likelihood(data)*self.prior()
 
 
 	def single_likelihood(self, datapoint):
@@ -323,7 +324,9 @@ def p_data_action(datapoint, action, prev_data=None):
 		machine=action[1]
 		for t in t_space:
 			for h in hf.create_all_hypotheses(machine):
-				pda+=h.single_likelihood(datapoint)*h.unnormalized_posterior(prev_data)
+				pda+=h.single_likelihood(datapoint)*\
+					 t.hypothesis_likelihood(h)*t.prior()
+						#h.unnormalized_posterior(prev_data)
 		return pda
 	else:
 		return 0
