@@ -1,16 +1,6 @@
 
+n_kids=2 #29 total, use 40
+truncate=5
+n_r_theo=2#5
+n_r_random=2#50
 
-
-n_colors=3
-n_shapes=3
-
-epsilon=1e-3
-
-n_theories=12
-
-#machines=[(2,0), (1,1), (0,2)]
-
-
-
-machines=[(blue, rectangle), (green, circle), (red, triangle)]
-available_toys=[(blue, circle), (red, rectangle), (green, triangle)]
