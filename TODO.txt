@@ -1,13 +1,14 @@
 
 
 TODO
--hypothesis model
--checks checks checks for the models
--optimize? joint learner takes ~2 h per action choice
--filter double choice in models
--implement learners' interaction with the world
--analysis: what to look at? information gain per action? data vs models. 
+-measure EIG wrt optimal model, kids vs random, for different truncations. 
 -'yoked' model? conditioned to kids' experience?
+-hypothesis model
+-joint model
+-checks checks checks for the models
+-optimize? joint learner takes ~2 h per action choice --DONE?
+-implement learners' interaction with the world --DONE
+-analysis: what to look at? information gain per action? data vs models. 
 
 CHECKS:
 +NORMALIZATIONS

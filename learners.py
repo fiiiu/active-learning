@@ -10,7 +10,7 @@ class ActiveLearner(object):
 	def __init__(self):
 		self.experience=[]
 		
-	def choose_action(self, prev_data=None):
+	def choose_action(self, prev_data=[]):#None):
 		mingain=1000
 		astars=[]
 		for a in world.possible_actions():
@@ -20,7 +20,12 @@ class ActiveLearner(object):
 				mingain=this_gain
 			elif this_gain == mingain:
 				astars.append(a)
-		choice=random.choice(astars)
+		while True:
+			choice=random.choice(astars)
+			if len(prev_data)==0:
+				break
+			elif choice!=prev_data[-1].action:
+				break
 		self.experience.append(world.make_action(choice))
 		return choice
 

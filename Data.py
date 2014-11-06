@@ -6,7 +6,7 @@ import parameters
 class Data():
 
 	def __init__(self):
-		self.filename=parameters.directory+'Data/CPF2_Transcribed110214-2.csv'
+		self.filename=parameters.directory+'Data/CPF2_Transcribed110414-3CSV.csv'
 		self.data={}
 
 	def read(self, filter=True, astext=True):
@@ -15,7 +15,7 @@ class Data():
 			for row in filereader:
 				valid_data=[]
 				previous_entry=''
-				for entry in row[1:]:
+				for entry in row[2:]:
 					if entry!='' and entry!='::': #the '::' is for one ?wrong entry in the data
 						if (filter and entry!=previous_entry) or not filter:
 							valid_data.append(self.parse(entry, astext))
