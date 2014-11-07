@@ -38,7 +38,6 @@ def p_data_action(datapoint, action, prev_data=[]):
 			for h in singleh_space:
 				pda+=p_singledata_hypothesis(datapoint, h, machine)*\
 					 p_hypothesis_theory(h,machine,t)*p_theory(t)
-				     
 		return pda
 	else:
 		return 0
