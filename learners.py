@@ -67,4 +67,13 @@ class JointLearner(ActiveLearner):
 		return entropy_gains.joint_expected_final_entropy(action, data)
 
 
+class HypothesisLearner(ActiveLearner):
+	"""docstring for HypothesisLearner"""
+	def __init__(self):
+		super(HypothesisLearner, self).__init__()
+		
+		
+	def expected_final_entropy(self, action, data=None):
+		return entropy_gains.hypothesis_expected_final_entropy(action, data)
+
 	

@@ -29,29 +29,33 @@ th_space=[(t, h) for t in t_space for h in fullh_space]
 
 
 
-def p_data_action(datapoint, action, prev_data=None):
+def p_data_action(datapoint, action, prev_data=[]):
 	"""UNNORMALIZED"""
 	if datapoint in world.possible_data(action):
 		pda=0
 		machine=action[1]
 		for t in t_space:
-			#for h in hf.create_all_hypotheses(machine):
 			for h in singleh_space:
 				pda+=p_singledata_hypothesis(datapoint, h, machine)*\
 					 p_hypothesis_theory(h,machine,t)*p_theory(t)
-				     #p_hypothesis_data(h, machine, prev_data)
-				#pda+=h.single_likelihood(datapoint)*h.unnormalized_posterior(prev_data)
-		return pda#float(pda)/len(world.possible_data(action))
+				     
+		return pda
 	else:
 		return 0
 
-def p_hypothesis_data(h, m, d=None):
-	if d is None:
-		return p_hypothesis(h,m)
-	else:
-		#norm=sum([p_data_hypothesis(d,h,m)*p_hypothesis(h,m) for h in singleh_space for m in machines])
-		#print 'norm ', norm
-		return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
+def p_hypothesis_data(h, m, d=[]):
+	return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
+
+def p_hypotheses_data(hs, d=[]):
+	prob=0
+	for t in t_space:
+		lik=1
+		for i,h in enumerate(hs):
+			m=world.machines[i]
+			lik*=p_data_hypothesis(d,m,h)*p_hypothesis_theory(h,m,t)
+		prob+=lik*p_theory(t)
+	return prob
+
 
 def p_hypothesis(h,m):
 	prob=0
@@ -60,15 +64,22 @@ def p_hypothesis(h,m):
 	return prob
 
 
-def p_theory_data(t, d=None, normalized=False):
-	if d is None:
-		return p_theory(t)
+def p_theoryhypothesis_data(t, hs, d=[]):
+	prob=1
+	for i,h in enumerate(hs):
+		m=world.machines[i]
+		prob*=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)
+	prob*=p_theory(t)
+	return prob
+
+
+
+def p_theory_data(t, d=[], normalized=False):
+	if normalized:#this could be a tad more efficient, without recomputing t
+		norm=sum([p_data_theory(d,tt)*p_theory(tt) for tt in t_space])
+		return p_data_theory(d,t)*p_theory(t)/norm
 	else:
-		if normalized:#this could be a tad more efficient, without recomputing t
-			norm=sum([p_data_theory(d,tt)*p_theory(tt) for tt in t_space])
-			return p_data_theory(d,t)*p_theory(t)/norm
-		else:
-			return p_data_theory(d,t)*p_theory(t)
+		return p_data_theory(d,t)*p_theory(t)
 
 
 def p_theory(t): #flat prior: argument ignored
