@@ -267,6 +267,7 @@ def main(player, n):
 
 if __name__ == '__main__':
 	n=1
+	parallel=False
 	if len(sys.argv)==1:
 		player='kids'		
 	else:
@@ -280,7 +281,7 @@ if __name__ == '__main__':
 		for i in range(1,n+1):
 			p=Process(target=main, args=(player, i,))
 			p.start()
-			p.join()
+		p.join()
 			#main(player, i)
 	else:
 		main(player,n)
