@@ -54,13 +54,13 @@ def plot_truncated_eig(n):
 
 def plot_sequential(n, dod=False):	
 	for i in range(1,n+1):
-		filename='full-kids-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
+		filename='uenfull-kids-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
 		fulldata=np.loadtxt(data_directory+filename)
 		plt.subplot(3,2,i, title='N actions: {0}'.format(i))
 		#plt.suptitle('{0}'.format(i))
 		if dod:
-			plt.ylim([0,0.5])
-			plt.xlim([0,0.25])
+			#plt.ylim([0,0.5])
+			#plt.xlim([0,0.25])
 			#plt.hist((fulldata[:,2]-fulldata[:,0])-(fulldata[:,1]-fulldata[:,0]))
 			plt.plot((fulldata[:,1]-fulldata[:,0]),(fulldata[:,2]-fulldata[:,0]), 'o')
 			plt.plot(np.linspace(0,0.25,2),np.linspace(0,0.25,2), 'k-')
@@ -85,10 +85,9 @@ def plot_sequential(n, dod=False):
 
 
 
-
 def main():
 	#plot_entropy()
-	plot_sequential(6,True)
+	plot_sequential(3,True)
 	#plot_truncated_eig(1)
 
 if __name__ == '__main__':

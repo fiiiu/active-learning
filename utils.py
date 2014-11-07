@@ -16,18 +16,27 @@ def H(p):
     return h
 
 
-def H(p, support):
+def H(p, support, normalized=False):
     """
     Return the Shannon entropy of a distribution given as a function and its discrete support
-    MUST BE NORMALIZED
+    #MUST BE NORMALIZED --NO LONGER, just tell it! :)
     """
     entropy=0
-    for x in support:
-        prob=p(x)
-        if prob!=0:
-            entropy-=np.log2(prob)*prob
+    if normalized:
+        for x in support:
+            prob=p(x)
+            if prob!=0:
+                entropy-=np.log2(prob)*prob
+        return entropy
+    else:
+        norm=0
+        for x in support:
+            prob=p(x)
+            norm+=prob
+            if prob!=0:
+                entropy-=np.log2(prob)*prob
+        return entropy/norm+np.log2(norm)
 
-    return entropy
 
 
 

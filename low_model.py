@@ -64,7 +64,7 @@ def p_theory_data(t, d=None, normalized=False):
 	if d is None:
 		return p_theory(t)
 	else:
-		if normalized:
+		if normalized:#this could be a tad more efficient, without recomputing t
 			norm=sum([p_data_theory(d,tt)*p_theory(tt) for tt in t_space])
 			return p_data_theory(d,t)*p_theory(t)/norm
 		else:

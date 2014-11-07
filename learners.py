@@ -61,10 +61,10 @@ class JointLearner(ActiveLearner):
 	"""docstring for JointLearner"""
 	def __init__(self):
 		super(JointLearner, self).__init__()
-		#self.model = Model.Model()
 		
-	def entropy_gain(self, action, data=None):
-		return entropy_gains.joint_entropy_gain(action, data)
+		
+	def expected_final_entropy(self, action, data=None):
+		return entropy_gains.joint_expected_final_entropy(action, data)
 
 
 	

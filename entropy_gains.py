@@ -14,6 +14,8 @@ def ave_theory_expected_entropy_gain(sequence):
 	entropies=[]
 	for i,datapoint in enumerate(sequence):
 		entropy=theory_expected_entropy_gain(datapoint.action, sequence[:i])
+		#entropy=theory_expected_final_entropy(datapoint.action, sequence[:i])
+
 		entropies.append(entropy)
 		ave_entropies+=entropy
 	
@@ -42,9 +44,10 @@ def theory_expected_entropy_gain(action, data=None):
 	return expval/norm
 
 
-def theory_expected_final_entropy(action, data=None):
+
+def theory_expected_final_entropy(action, data=None, normalized=False):
 	
-	#normalize p_data_action, p_theory_data SHOULD BE NORMALIZED.
+	#normalize p_data_action, p_theory_data not necessarily, just tell me
 	norm=0
 	for d in world.possible_data(action):
 	 	norm+=model.p_data_action(d,action,data)
@@ -52,7 +55,8 @@ def theory_expected_final_entropy(action, data=None):
 	expval=0
 	for d in world.possible_data(action):
 		alldata=[d] if data is None else [d]+data
-		expval+=utils.H(lambda t: model.p_theory_data(t, alldata, normalized=True), model.t_space)*\
+		expval+=utils.H(lambda t: model.p_theory_data(t, alldata, normalized=normalized),\
+						 model.t_space, normalized=normalized)*\
 				model.p_data_action(d,action,data)
 
 	return expval/norm

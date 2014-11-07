@@ -1,14 +1,16 @@
 
 
 TODO
--measure EIG wrt optimal model, kids vs random, for different truncations. 
--'yoked' model? conditioned to kids' experience?
+-save whole gameplay! at least for theory model. check weight for random, if too big
+save at least sequential entropies for zi.
 -hypothesis model
 -joint model
--checks checks checks for the models
+-measure EIG wrt optimal model, kids vs random, for different truncations. --DONE
+-'yoked' model? conditioned to kids' experience? --DONE
+-checks checks checks for the models --DONE
 -optimize? joint learner takes ~2 h per action choice --DONE?
 -implement learners' interaction with the world --DONE
--analysis: what to look at? information gain per action? data vs models. 
+-analysis: what to look at? information gain per action? data vs models. --DONE
 
 CHECKS:
 +NORMALIZATIONS
