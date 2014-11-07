@@ -2,7 +2,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import scipy.stats
 
 data_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
 
@@ -38,27 +38,58 @@ def plot_variance():
 	
 
 def plot_truncated_eig(n):
-	filename='full-kids-'+str(n)+'_tru-1'+'_treal-5'+'_rreal.txt'
+	filename='full-kids-'+str(n)+'_tru-1'+'_treal-20'+'_rreal.txt'
 	fulldata=np.loadtxt(data_directory+filename)
-	plt.hist(fulldata[:,1]-fulldata[:,0])
-	plt.hist(fulldata[:,2]-fulldata[:,0])
+	#plt.hist(fulldata[:,1]-fulldata[:,0],color='blue')
+	#plt.hist(fulldata[:,2]-fulldata[:,0],bottom=15, color='red')
+
+	#plt.ylim([0, 43])
+	#plt.xlim([0,0.5])
+	bins=plt.hist(fulldata[:,1]-fulldata[:,0],color='blue')
+	print bins[2]
+	maxcount=max(bins[0])
+	bins2=plt.hist(fulldata[:,2]-fulldata[:,0],bottom=maxcount+2,color='red')
+
 	plt.show()
 
-def plot_sequential(n):	
+def plot_sequential(n, dod=False):	
 	for i in range(1,n+1):
-		filename='full-kids-'+str(i)+'_tru-1'+'_treal-5'+'_rreal.txt'
+		filename='full-kids-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
 		fulldata=np.loadtxt(data_directory+filename)
-		plt.subplot(2,2,i)
-		plt.hist(fulldata[:,1]-fulldata[:,0],bins=6)
-		plt.hist(fulldata[:,2]-fulldata[:,0],bins=6)
+		plt.subplot(3,2,i, title='N actions: {0}'.format(i))
+		#plt.suptitle('{0}'.format(i))
+		if dod:
+			plt.ylim([0,0.5])
+			plt.xlim([0,0.25])
+			#plt.hist((fulldata[:,2]-fulldata[:,0])-(fulldata[:,1]-fulldata[:,0]))
+			plt.plot((fulldata[:,1]-fulldata[:,0]),(fulldata[:,2]-fulldata[:,0]), 'o')
+			plt.plot(np.linspace(0,0.25,2),np.linspace(0,0.25,2), 'k-')
+			stats=scipy.stats.ttest_rel((fulldata[:,1]-fulldata[:,0]), (fulldata[:,2]-fulldata[:,0]))
+			if i==1:
+				print "{0} action, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
+			else:
+				print "{0} actions, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
+		else:			
+			plt.ylim([0, 43])
+			plt.xlim([0,0.5])
+			bins=plt.hist(fulldata[:,1]-fulldata[:,0],color='blue')
+			print bins[2]
+			maxcount=max(bins[0])
+			bins2=plt.hist(fulldata[:,2]-fulldata[:,0],bottom=maxcount+2,color='red')
+			maxcount2=max(bins2[0])
+			plt.ylim([0, maxcount+maxcount2+4])
+
+
+
 	plt.show()
+
 
 
 
 def main():
 	#plot_entropy()
-	#plot_sequential(4)
-	plot_truncated_eig(1)
+	plot_sequential(6,True)
+	#plot_truncated_eig(1)
 
 if __name__ == '__main__':
 	main()

@@ -6,7 +6,11 @@ import parameters
 class Data():
 
 	def __init__(self):
-		self.filename=parameters.directory+'Data/CPF2_Transcribed110414-3CSV.csv'
+		self.filename=parameters.directory+'Data/corrected_CPF2_110614.csv'
+		
+		#self.filename=parameters.directory+'Data/CPF2_Transcribed110614CSV.csv'
+		#self.filename=parameters.directory+'Data/CPF2_Transcribed110414-3CSV.csv'
+		
 		self.data={}
 
 	def read(self, filter=True, astext=True):

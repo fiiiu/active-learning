@@ -71,34 +71,46 @@ def main(player, n):
 		n_long_kids=sum([data.get_kid_nactions(kid)>=truncate \
 						 for kid in data.get_kids()])
 		eig=np.zeros((n_long_kids,3))
-
-		#compute random runs first, reusable!!
-		reg=0
-		for r in range(n_r_random):
-			rl=learners.RandomLearner()
-			rseq=rl.play(truncate)
-			reg+=entropy_gains.ave_theory_expected_entropy_gain(rseq)[0]
-		reg/=n_r_random
+		tlactions=[]
+		rlactions=[]
+		#compute random runs first, reusable!! not really; entropy is kid dependent. 
+		# reg=0
+		# for r in range(n_r_random):
+		# 	rl=learners.RandomLearner()
+		# 	rseq=rl.play(truncate)
+		# 	reg+=entropy_gains.ave_theory_expected_entropy_gain(rseq)[0]
+		# reg/=n_r_random
 		
-
-		for k,kid in enumerate(data.get_kids()[:n_kids]):
+		k=0
+		for ki,kid in enumerate(data.get_kids()[:n_kids]):
 			if data.get_kid_nactions(kid)<truncate:
 				continue
+			
 			#get kid's action sequence
 			kidseq=data.data[kid][:truncate]
-			keg=entropy_gains.ave_theory_expected_entropy_gain(kidseq)[0]
+			#keg, kents=entropy_gains.ave_theory_expected_entropy_gain(kidseq)
+			keg=entropy_gains.theory_expected_entropy_gain(kidseq[-1].action,kidseq[:-1])
+			#print 'kid {0} entropies: {1}'.format(k,kents)
 			
 			#compute optimal choice entropy gain with kid's action sequence
 			tl=learners.TheoryLearner()
-			yokedseq=kidseq[:-1]+[Datapoint.Datapoint(tl.choose_action(kidseq[:truncate-1]), False)]#this False is generic, shouldn't be taken into account
-			tleg=entropy_gains.ave_theory_expected_entropy_gain(yokedseq)[0]
-			
+			tlaction=tl.choose_action(kidseq[:truncate-1])
+			tlactions.append(tlaction)
+			yokedseq=kidseq[:-1]+[Datapoint.Datapoint(tlaction, False)]#this False is generic, shouldn't be taken into account
+			#tleg, tlents=entropy_gains.ave_theory_expected_entropy_gain(yokedseq)
+			tleg=entropy_gains.theory_expected_entropy_gain(tlaction, kidseq[:-1])
+			#print tlents
+
 			reg=0
+			rlactions.append([])
 			for r in range(n_r_random):
 				rl=learners.RandomLearner()
 				#rseq=rl.play(truncate)
-				yokedseqr=kidseq[:-1]+[Datapoint.Datapoint(rl.choose_action(kidseq[:truncate-1]), False)]#this False is generic, shouldn't be taken into account
-				reg+=entropy_gains.ave_theory_expected_entropy_gain(yokedseqr)[0]
+				rlaction=rl.choose_action(kidseq[:truncate-1])
+				rlactions[k].append(rlaction)
+				yokedseqr=kidseq[:-1]+[Datapoint.Datapoint(rlaction, False)]#this False is generic, shouldn't be taken into account
+				#reg+=entropy_gains.ave_theory_expected_entropy_gain(yokedseqr)[0]
+				reg+=entropy_gains.theory_expected_entropy_gain(rlaction, kidseq[:-1])
 			reg/=n_r_random
 			
 
@@ -106,19 +118,30 @@ def main(player, n):
 			eig[k,1]=reg
 			eig[k,2]=keg
 			#print 'k: {0}, r:{1}, t:{2}'.format(keg, reg, tleg)
+			k+=1
 
 	if player in ['random', 'theory', 'kids']:
-		filename='../../Output/out-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
+		filename=parameters.output_directory+'out-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
 		np.savetxt(filename, eg)
 
 	if player in ['random', 'theory']:
-		filenameall='../../Output/all-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
+		filenameall=parameters.output_directory+'all-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
 		np.savetxt(filenameall, egall)
 	
 	if player=='full':
-		filename='../../Output/full-kids-'+str(truncate)+'_tru-'+str(n_r_theo)\
+		filename=parameters.output_directory+'full-kids-'+str(truncate)+'_tru-'+str(n_r_theo)\
 				+'_treal-'+str(n_r_random)+'_rreal.txt'
 		np.savetxt(filename, eig)
+
+		with open(parameters.output_directory+'full-tlactions-'+str(truncate)+'_tru-'+\
+			str(n_r_random)+'_rreal.txt','w') as f:
+			for kact in tlactions:
+				f.write(str(kact)+'\n')
+
+		with open(parameters.output_directory+'full-rlactions-'+str(truncate)+'_tru-'+\
+			str(n_r_random)+'_rreal.txt','w') as f:
+			for kact in rlactions:
+				f.write(str(kact)+'\n')
 
 
 	print 'time elapsed for run {0}: {1:.0f} s'.format(filename, time.clock()-starttime)
