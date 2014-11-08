@@ -72,3 +72,7 @@ class Data():
 
 	def get_kid_nactions(self, kid):
 		return len(self.data[kid])
+
+	def get_index_experience(self, i):
+		return self.data[self.data.keys()[i]]
+		

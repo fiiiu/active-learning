@@ -51,7 +51,7 @@ def p_hypotheses_data(hs, d=[]):
 		lik=1
 		for i,h in enumerate(hs):
 			m=world.machines[i]
-			lik*=p_data_hypothesis(d,m,h)*p_hypothesis_theory(h,m,t)
+			lik*=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)
 		prob+=lik*p_theory(t)
 	return prob
 

@@ -5,7 +5,7 @@ import numpy as np
 import scipy.stats
 
 data_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
-
+today='141107/'
 
 
 def plot_entropy():
@@ -52,26 +52,33 @@ def plot_truncated_eig(n):
 
 	plt.show()
 
-def plot_sequential(n, dod=False):	
+def plot_sequential(model, n, scatter=False):	
 	for i in range(1,n+1):
-		filename='uenfull-kids-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
-		fulldata=np.loadtxt(data_directory+filename)
-		plt.subplot(3,2,i, title='N actions: {0}'.format(i))
+		filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
+		fulldata=np.loadtxt(data_directory+today+filename)
+		plt.subplot(np.ceil(float(n+1))/2,2,i, title='N actions: {0}'.format(i))
 		#plt.suptitle('{0}'.format(i))
-		if dod:
+		if scatter:
 			#plt.ylim([0,0.5])
 			#plt.xlim([0,0.25])
 			#plt.hist((fulldata[:,2]-fulldata[:,0])-(fulldata[:,1]-fulldata[:,0]))
 			plt.plot((fulldata[:,1]-fulldata[:,0]),(fulldata[:,2]-fulldata[:,0]), 'o')
-			plt.plot(np.linspace(0,0.25,2),np.linspace(0,0.25,2), 'k-')
+			m1=plt.xlim()[1]
+			m2=plt.ylim()[1]
+			mm=max(m1,m2)
+			#print plt.xlim(), plt.ylim()
+			plt.plot(np.linspace(0,mm,2),np.linspace(0,mm,2), 'k-')
 			stats=scipy.stats.ttest_rel((fulldata[:,1]-fulldata[:,0]), (fulldata[:,2]-fulldata[:,0]))
+			plt.xlim([0, m1])
+			plt.ylim([0, m2])
+
 			if i==1:
 				print "{0} action, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
 			else:
 				print "{0} actions, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
 		else:			
-			plt.ylim([0, 43])
-			plt.xlim([0,0.5])
+			#plt.ylim([0, 43])
+			#plt.xlim([0,0.5])
 			bins=plt.hist(fulldata[:,1]-fulldata[:,0],color='blue')
 			print bins[2]
 			maxcount=max(bins[0])
@@ -87,7 +94,12 @@ def plot_sequential(n, dod=False):
 
 def main():
 	#plot_entropy()
-	plot_sequential(3,True)
+	model='hypfull'
+	#model='jointfull'
+	#model='theoryfull'
+	
+	#plot_sequential(model,3,True)
+	plot_sequential(model,3,False)
 	#plot_truncated_eig(1)
 
 if __name__ == '__main__':

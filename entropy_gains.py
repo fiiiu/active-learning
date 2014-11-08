@@ -73,7 +73,7 @@ def joint_expected_final_entropy(action, data=None, normalized=False):
 	for d in world.possible_data(action):
 		alldata=[d] if data is None else [d]+data
 		expval+=utils.H(lambda (t,hs): model.p_theoryhypothesis_data(t,hs,alldata),\
-					model.th_space)*model.p_data_action(d,action,data)
+					model.th_space, False)*model.p_data_action(d,action,data)
 	
 	return expval/norm
 
@@ -89,7 +89,7 @@ def hypotheses_expected_final_entropy(action, data=None, normalized=False):
 	for d in world.possible_data(action):
 		alldata=[d] if data is None else [d]+data
 		expval+=utils.H(lambda hs: model.p_hypotheses_data(hs,alldata),\
-					model.fullh_space)*model.p_data_action(d,action,data)
+					model.fullh_space, False)*model.p_data_action(d,action,data)
 	
 	return expval/norm
 

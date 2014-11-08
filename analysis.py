@@ -244,8 +244,8 @@ def main(player, n):
 		np.savetxt(filenameall, egall)
 	
 	if player in ['theoryfull', 'jointfull', 'hypfull']:
-		filename=parameters.output_directory+player+'-'+str(truncate)+'_tru-'+str(n_r_theo)\
-				+'_treal-'+str(n_r_random)+'_rreal.txt'
+		filename=parameters.output_directory+player+'-'+str(truncate)+'_tru-'\
+				+str(n_r_random)+'_rreal.txt'
 		np.savetxt(filename, eig)
 
 		with open(parameters.output_directory+player+'-modelactions-'+str(truncate)+'_tru-'+\
