@@ -93,3 +93,12 @@ def hypotheses_expected_final_entropy(action, data=None, normalized=False):
 	
 	return expval/norm
 
+
+def expected_final_entropy(level, action, data=None, normalized=False):
+	if level=='theory':
+		return theory_expected_final_entropy(action, data, normalized)
+	elif level=='hypotheses':
+		return	hypotheses_expected_final_entropy(action, data, normalized)
+	elif level=='joint':
+		return	joint_expected_final_entropy(action, data, normalized)
+

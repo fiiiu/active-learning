@@ -3,7 +3,7 @@ import scipy.misc
 import itertools
 import world
 
-epsilon=1e-3
+#epsilon=1e-3
 
 n_colors=world.n_colors
 n_shapes=world.n_shapes
