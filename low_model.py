@@ -2,8 +2,9 @@
 import scipy.misc
 import itertools
 import world
+import parameters
 
-#epsilon=1e-3
+epsilon=parameters.epsilon
 
 n_colors=world.n_colors
 n_shapes=world.n_shapes

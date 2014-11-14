@@ -25,7 +25,7 @@ def main(player, n):
 	data.read(astext=False)
 	n_kids=parameters.n_kids
 	truncate=int(n)
-	n_r_theo=parameters.n_r_theo
+	#n_r_theo=parameters.n_r_theo
 	n_r_random=parameters.n_r_random
 
 	eg=np.zeros(len(data.get_kids()[:n_kids]))
