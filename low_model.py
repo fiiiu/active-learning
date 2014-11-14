@@ -29,8 +29,8 @@ th_space=[(t, h) for t in t_space for h in fullh_space]
 
 
 
-def p_data_action(datapoint, action, prev_data=[]):
-	"""UNNORMALIZED"""
+def p_data_action_old(datapoint, action, prev_data=[]):
+	"""UNNORMALIZED --INDEPENDENT OF PREV_DATA!!!!!"""
 	if datapoint in world.possible_data(action):
 		pda=0
 		machine=action[1]
@@ -41,6 +41,43 @@ def p_data_action(datapoint, action, prev_data=[]):
 		return pda
 	else:
 		return 0
+
+def p_data_action(datapoint, action, prev_data=[]):
+	"""UNNORMALIZED --FIXING"""
+	if datapoint in world.possible_data(action):
+		pda=0
+		machine=action[1]
+		for t in t_space:
+			for h in singleh_space:
+				pda+=p_singledata_hypothesis(datapoint,h,machine)*\
+				 	 p_hypothesis_theorydata(h,machine,t,prev_data)*\
+					 p_theory_data(t,prev_data)				
+				 
+		return pda
+	else:
+		return 0
+
+
+def p_hypothesis_theorydata(h, m, t, d=[]):
+	dm=parse_data(d)
+	di=dm[machines.index(m)]
+	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data(di,m)
+
+
+def p_data(d, m):
+	p=0
+	for t in t_space:
+		for h in singleh_space:
+			p+=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)*p_theory(t)
+	return p
+
+
+def parse_data(d):
+	dm=[[],[],[]]
+	for dp in d:
+		dm[machines.index(dp.machine)].append(dp)
+	return dm
+
 
 def p_hypothesis_data(h, m, d=[]):
 	return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
@@ -100,9 +137,7 @@ def p_data_theory(d, t):
 	"""UNNORMALIZED --CHECKED"""
 	lik=1
 	#parse data in machines
-	dm=[[],[],[]]
-	for dp in d:
-		dm[machines.index(dp.machine)].append(dp)
+	dm=parse_data(d)
 	#go
 	for i,m in enumerate(machines):
 		hyp_lik=0
@@ -125,6 +160,8 @@ def p_singledata_hypothesis(datapoint, h, m):
 	if m != datapoint.machine:
 		#import pdb; pdb.set_trace()
 		print "--CAREFUL. THIS WORKS FOR SAME MACHINE, NOT FOR DIFFERENT!!"
+		datapoint.display()
+		print h, m
 		return 371#./15#n_toys/n_machines/2
 	else:
 		if (datapoint.active and \
