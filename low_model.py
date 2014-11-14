@@ -74,6 +74,7 @@ def p_theoryhypothesis_data(t, hs, d=[]):
 
 
 def p_theory_data(t, d=[], normalized=False):
+	"""CHECKED""" 
 	if normalized:#this could be a tad more efficient, without recomputing t
 		norm=sum([p_data_theory(d,tt)*p_theory(tt) for tt in t_space])
 		return p_data_theory(d,t)*p_theory(t)/norm
@@ -85,13 +86,28 @@ def p_theory(t): #flat prior: argument ignored
 	return 1.0/n_theories
 
 
-def p_data_theory(d, t):
+def p_data_theory_old(d, t):
 	"""UNNORMALIZED"""
 	lik=1
 	for m in machines:
 		hyp_lik=0
 		for h in singleh_space:			
 			hyp_lik+=p_data_hypothesis(d, h, m)*p_hypothesis_theory(h, m, t)
+		lik*=hyp_lik
+	return lik
+
+def p_data_theory(d, t):
+	"""UNNORMALIZED --CHECKED"""
+	lik=1
+	#parse data in machines
+	dm=[[],[],[]]
+	for dp in d:
+		dm[machines.index(dp.machine)].append(dp)
+	#go
+	for i,m in enumerate(machines):
+		hyp_lik=0
+		for h in singleh_space:			
+			hyp_lik+=p_data_hypothesis(dm[i], h, m)*p_hypothesis_theory(h, m, t)
 		lik*=hyp_lik
 	return lik
 
@@ -105,10 +121,11 @@ def p_data_hypothesis(data, h, m):
 
 
 def p_singledata_hypothesis(datapoint, h, m):
-	"""UNNORMALIZED"""
+	"""UNNORMALIZED --CAREFUL. THIS WORKS FOR SAME MACHINE, NOT FOR DIFFERENT!!"""
 	if m != datapoint.machine:
 		#import pdb; pdb.set_trace()
-		return 1#./15#n_toys/n_machines/2
+		print "--CAREFUL. THIS WORKS FOR SAME MACHINE, NOT FOR DIFFERENT!!"
+		return 371#./15#n_toys/n_machines/2
 	else:
 		if (datapoint.active and \
 		   produce_hypothesis(h)[n_colors*datapoint.toy_shape+datapoint.toy_color]==1) or\
@@ -119,6 +136,7 @@ def p_singledata_hypothesis(datapoint, h, m):
 			return epsilon#0#epsilon/n_toys/n_machines/2
 
 def produce_hypothesis(h):
+	"""CHECKED"""
 	hyp=[0]*n_colors*n_shapes
 	if h==1: #any
 		hyp=[1]*n_colors*n_shapes
@@ -168,6 +186,7 @@ def produce_hypothesis(h):
 
 
 def p_hypothesis_theory(h, m, t):
+	"""CHECKED"""
 	if t==0:
 		return float(h==0)
 	
@@ -227,14 +246,30 @@ def p_hypothesis_theory(h, m, t):
 			return 0
 
 	elif t==9: #NOT match color
-		if 0 <= h-2 < n_colors: 
+		if 0 <= h-2 < n_colors: #direct color hypotheses
 			return float(h-2 != m[0])/(n_colors-1)
+		elif 2+n_colors+n_shapes+2*n_colors*n_shapes <= h <\
+			 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2)):
+			 #two color hypotheses
+			offset=2+n_colors+n_shapes+2*n_colors*n_shapes
+			color, color2=[i for i in itertools.combinations(range(n_colors),2)][h-offset]
+			return float(color!=m[0] and color2!=m[0])/\
+					(scipy.misc.comb(n_colors,2)-(n_colors-1))
 		else:
 			return 0
 
 	elif t==10: #NOT match shape
 		if 0 <= h-2-n_colors < n_shapes: 
 			return float(h-2-n_colors != m[1])/(n_shapes-1)
+		elif 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))\
+			 <= h <\
+			 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))+\
+			 +int(scipy.misc.comb(n_shapes,2)):
+			 #two color hypotheses
+			offset=2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))
+			shape, shape2=[i for i in itertools.combinations(range(n_shapes),2)][h-offset]
+			return float(shape!=m[1] and shape2!=m[1])/\
+					(scipy.misc.comb(n_shapes,2)-(n_shapes-1))
 		else:
 			return 0
 
