@@ -4,8 +4,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats
 
-data_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
-today='141107/'
+
+output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
+today='141114/'
+batch='ep-0.05/'
+data_directory=output_directory+today+batch
+	
 
 
 def plot_entropy():
@@ -54,8 +58,11 @@ def plot_truncated_eig(n):
 
 def plot_sequential(model, n, scatter=False):	
 	for i in range(1,n+1):
-		filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
-		fulldata=np.loadtxt(data_directory+today+filename)
+		#filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
+		filename=model+'-'+str(i)+'_tru-20'+'_rreal.txt'
+		#fulldata=np.loadtxt(data_directory+today+filename)
+		fulldata=np.loadtxt(data_directory+filename)
+		#print data_directory+filename
 		plt.subplot(np.ceil(float(n+1))/2,2,i, title='N actions: {0}'.format(i))
 		#plt.suptitle('{0}'.format(i))
 		if scatter:
@@ -101,6 +108,7 @@ def plot_epsilons(model, kind='hist'):
 		filename=model+'-'+str(tru)+'_tru-20'+'_rreal-'+str(epsilon)+'.txt'
 		#fulldata=np.loadtxt(data_directory+today+filename)
 		fulldata=np.loadtxt(data_directory+filename)
+		print data_directory+filename
 		a,b=np.ceil(float(len(epsilons)+1))/2,2
 		a,b=np.ceil(float(len(epsilons)+1))/3,3
 		plt.subplot(a,b,i+1, title='epsilon={0}'.format(epsilon))
@@ -133,15 +141,16 @@ def main():
 	#plot_entropy()
 	#model='hypfull'
 	#model='jointfull'
-	#model='theoryfull'
+	model='theoryfull'
 	
-	#plot_sequential(model,4,True)
+
+	plot_sequential(model,4,True)
 	#plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
-	model='theory'
+	#model='theory'
 	#plot_epsilons(model, 'hist')
-	plot_epsilons(model, 'scatter')
+	#plot_epsilons(model, 'scatter')
 
 if __name__ == '__main__':
 	main()

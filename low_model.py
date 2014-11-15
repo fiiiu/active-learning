@@ -30,21 +30,21 @@ th_space=[(t, h) for t in t_space for h in fullh_space]
 
 
 
-def p_data_action_old(datapoint, action, prev_data=[]):
-	"""UNNORMALIZED --INDEPENDENT OF PREV_DATA!!!!!"""
-	if datapoint in world.possible_data(action):
-		pda=0
-		machine=action[1]
-		for t in t_space:
-			for h in singleh_space:
-				pda+=p_singledata_hypothesis(datapoint, h, machine)*\
-					 p_hypothesis_theory(h,machine,t)*p_theory(t)
-		return pda
-	else:
-		return 0
+# def p_data_action_old(datapoint, action, prev_data=[]):
+# 	"""UNNORMALIZED --INDEPENDENT OF PREV_DATA!!!!!"""
+# 	if datapoint in world.possible_data(action):
+# 		pda=0
+# 		machine=action[1]
+# 		for t in t_space:
+# 			for h in singleh_space:
+# 				pda+=p_singledata_hypothesis(datapoint, h, machine)*\
+# 					 p_hypothesis_theory(h,machine,t)*p_theory(t)
+# 		return pda
+# 	else:
+# 		return 0
 
 def p_data_action(datapoint, action, prev_data=[]):
-	"""UNNORMALIZED --FIXING"""
+	"""UNNORMALIZED --CHECKED"""
 	if datapoint in world.possible_data(action):
 		pda=0
 		machine=action[1]
@@ -60,12 +60,14 @@ def p_data_action(datapoint, action, prev_data=[]):
 
 
 def p_hypothesis_theorydata(h, m, t, d=[]):
+	"CHECKED"
 	dm=parse_data(d)
 	di=dm[machines.index(m)]
 	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data(di,m)
 
 
 def p_data(d, m):
+	"CHECKED"
 	p=0
 	for t in t_space:
 		for h in singleh_space:
@@ -74,42 +76,43 @@ def p_data(d, m):
 
 
 def parse_data(d):
+	"CHECKED" 
 	dm=[[],[],[]]
 	for dp in d:
 		dm[machines.index(dp.machine)].append(dp)
 	return dm
 
 
-def p_hypothesis_data(h, m, d=[]):
-	return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
+# def p_hypothesis_data(h, m, d=[]):
+# 	return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
 
 def p_hypotheses_data(hs, d=[]):
+	"CHECKED"
 	prob=0
+	dm=parse_data(d)
 	for t in t_space:
 		lik=1
 		for i,h in enumerate(hs):
 			m=world.machines[i]
-			lik*=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)
+			lik*=p_data_hypothesis(dm[i],h,m)*p_hypothesis_theory(h,m,t)
 		prob+=lik*p_theory(t)
 	return prob
 
-
-def p_hypothesis(h,m):
-	prob=0
-	for t in t_space:
-		prob+=p_hypothesis_theory(h,m,t)*p_theory(t)
-	return prob
-
+# def p_hypothesis(h,m):
+# 	prob=0
+# 	for t in t_space:
+# 		prob+=p_hypothesis_theory(h,m,t)*p_theory(t)
+# 	return prob
 
 def p_theoryhypothesis_data(t, hs, d=[]):
+	"CHECKED"
 	prob=1
+	dm=parse_data(d)
 	for i,h in enumerate(hs):
 		m=world.machines[i]
-		prob*=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)
+		prob*=p_data_hypothesis(dm[i],h,m)*p_hypothesis_theory(h,m,t)
 	prob*=p_theory(t)
 	return prob
-
-
 
 def p_theory_data(t, d=[], normalized=False):
 	"""CHECKED""" 
@@ -121,18 +124,19 @@ def p_theory_data(t, d=[], normalized=False):
 
 
 def p_theory(t): #flat prior: argument ignored
+	"CHECKED"
 	return 1.0/n_theories
 
 
-def p_data_theory_old(d, t):
-	"""UNNORMALIZED"""
-	lik=1
-	for m in machines:
-		hyp_lik=0
-		for h in singleh_space:			
-			hyp_lik+=p_data_hypothesis(d, h, m)*p_hypothesis_theory(h, m, t)
-		lik*=hyp_lik
-	return lik
+# def p_data_theory_old(d, t):
+# 	"""UNNORMALIZED"""
+# 	lik=1
+# 	for m in machines:
+# 		hyp_lik=0
+# 		for h in singleh_space:			
+# 			hyp_lik+=p_data_hypothesis(d, h, m)*p_hypothesis_theory(h, m, t)
+# 		lik*=hyp_lik
+# 	return lik
 
 def p_data_theory(d, t):
 	"""UNNORMALIZED --CHECKED"""
@@ -149,7 +153,7 @@ def p_data_theory(d, t):
 
 
 def p_data_hypothesis(data, h, m):
-	"""UNNORMALIZED"""
+	"""UNNORMALIZED --CHECKED, MUST USE DATA FROM THIS MACHINE!"""
 	lik=1	
 	for datapoint in data:
 		lik*=p_singledata_hypothesis(datapoint, h, m)
