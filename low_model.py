@@ -12,8 +12,8 @@ machines=world.machines
 n_machines=len(machines)
 n_toys=len(world.available_toys)
 
-n_comb_2col=round(scipy.misc.comb(world.n_colors,2))
-n_comb_2sha=round(scipy.misc.comb(world.n_shapes,2))
+n_comb_2col=int(round(scipy.misc.comb(world.n_colors,2)))
+n_comb_2sha=int(round(scipy.misc.comb(world.n_shapes,2)))
 
 color_pairs=[col for col in itertools.combinations(range(n_colors),2)]
 shape_pairs=[sha for sha in itertools.combinations(range(n_shapes),2)]
