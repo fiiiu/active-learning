@@ -62,7 +62,7 @@ def p_data_action(datapoint, action, prev_data=[]):
 			for h in singleh_space:
 				pda+=p_singledata_hypothesis(datapoint,h,machine)*\
 				 	 p_hypothesis_theorydata(h,machine,t,prev_data)*\
-					 p_theory_data(t,prev_data)				
+					 p_theory_data(t,prev_data, normalized=True)				
 				 
 		return pda
 	else:
@@ -97,7 +97,7 @@ def parse_data(d):
 # 	return p_data_hypothesis(d,h,m)*p_hypothesis(h,m)#/norm
 
 def p_hypotheses_data(hs, d=[]):
-	"CHECKED"
+	"CHECKED --UNNORMALIZED"
 	prob=0
 	dm=parse_data(d)
 	for t in t_space:
@@ -115,7 +115,7 @@ def p_hypotheses_data(hs, d=[]):
 # 	return prob
 
 def p_theoryhypothesis_data(t, hs, d=[]):
-	"CHECKED"
+	"CHECKED --UNNORMALIZED"
 	prob=1
 	dm=parse_data(d)
 	for i,h in enumerate(hs):
