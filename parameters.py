@@ -3,7 +3,7 @@ import platform
 
 if platform.system()=='Darwin':
 	directory='/Users/alejo/Neuro/ActiveLearning/'
-elif platform.syste()=='Linux':
+elif platform.system()=='Linux':
 	directory='/home/alejo/Run/active-learning/'
 
 output_directory=directory+'Output/'
