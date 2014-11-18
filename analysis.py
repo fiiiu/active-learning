@@ -18,7 +18,7 @@ from multiprocessing import Process
 	
 
 def main(player, n):
-	random.seed(0)
+	#random.seed(0)
 
 	starttime=time.clock()
 	data=Data.Data()

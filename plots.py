@@ -6,9 +6,9 @@ import scipy.stats
 
 
 output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
-today='141114/'
-batch='ep-0.05/'
-data_directory=output_directory+today+batch
+today='141117/'
+#batch='ep-0.05/'
+data_directory=output_directory+today#+batch
 	
 
 
@@ -139,9 +139,9 @@ def plot_epsilons(model, kind='hist'):
 
 def main():
 	#plot_entropy()
-	#model='hypfull'
+	model='hypfull'
 	#model='jointfull'
-	model='theoryfull'
+	#model='theoryfull'
 	
 
 	plot_sequential(model,4,True)

@@ -1,4 +1,4 @@
-
+import numpy as np
 import scipy.misc
 import itertools
 import world
@@ -12,10 +12,15 @@ machines=world.machines
 n_machines=len(machines)
 n_toys=len(world.available_toys)
 
+n_comb_2col=int(scipy.misc.comb(world.n_colors,2))
+n_comb_2sha=int(scipy.misc.comb(world.n_shapes,2))
+
+color_pairs=[col for col in itertools.combinations(range(n_colors),2)]
+shape_pairs=[sha for sha in itertools.combinations(range(n_shapes),2)]
+
 n_theories=12
 n_hypotheses=2+world.n_colors+world.n_shapes+2*world.n_colors*world.n_shapes+\
-							int(scipy.misc.comb(world.n_colors,2))+\
-							int(scipy.misc.comb(world.n_shapes,2))
+							n_comb_2col+n_comb_2sha
 
 t_space=range(n_theories)
 singleh_space=range(n_hypotheses)
@@ -24,6 +29,11 @@ temp=[singleh_space]*world.n_machines
 fullh_space=list(itertools.product(*[singleh_space]*world.n_machines))
 
 th_space=[(t, h) for t in t_space for h in fullh_space]
+
+#hypotheses_produced=False
+shypotheses=np.zeros((n_hypotheses,n_colors*n_shapes))
+
+
 
 #print len(fullh_space)
 #print th_space[314420]
@@ -170,12 +180,27 @@ def p_singledata_hypothesis(datapoint, h, m):
 		return 371#./15#n_toys/n_machines/2
 	else:
 		if (datapoint.active and \
-		   produce_hypothesis(h)[n_colors*datapoint.toy_shape+datapoint.toy_color]==1) or\
+		   shypotheses[h][n_colors*datapoint.toy_shape+datapoint.toy_color]==1) or\
 		   (not datapoint.active and\
-		   produce_hypothesis(h)[n_colors*datapoint.toy_shape+datapoint.toy_color]==0):
+		   shypotheses[h][n_colors*datapoint.toy_shape+datapoint.toy_color]==0):
 			return 1#./15#n_(1-epsilon)/n_toys/n_machines/2
+		
+		# if (datapoint.active and \
+		#    produce_hypothesis(h)[n_colors*datapoint.toy_shape+datapoint.toy_color]==1) or\
+		#    (not datapoint.active and\
+		#    produce_hypothesis(h)[n_colors*datapoint.toy_shape+datapoint.toy_color]==0):
+		# 	return 1#./15#n_(1-epsilon)/n_toys/n_machines/2
 		else:
 			return epsilon#0#epsilon/n_toys/n_machines/2
+
+
+
+def produce_all_hypotheses():
+	#if not hypothesis_produced:
+	for i,h in enumerate(singleh_space):
+		shypotheses[i]=produce_hypothesis(h)
+	#hypothesis_produced=True
+
 
 def produce_hypothesis(h):
 	"""CHECKED"""
@@ -205,18 +230,18 @@ def produce_hypothesis(h):
 		for i in range(n_colors):
 			hyp[n_colors*shape+i]=1
 	elif 2+n_colors+n_shapes+2*n_colors*n_shapes <= h < \
-		 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2)):
+		 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col:
 		 #color OR color2
 		offset=2+n_colors+n_shapes+2*n_colors*n_shapes
-		color, color2=[i for i in itertools.combinations(range(n_colors),2)][h-offset]
+		color, color2=color_pairs[h-offset]
 		for j in range(n_shapes):
 			hyp[j*n_colors+color]=1
 			hyp[j*n_colors+color2]=1 
-	elif 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2)) <= h < \
-		 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))+int(scipy.misc.comb(n_shapes,2)):
+	elif 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col <= h < \
+		 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col+n_comb_2sha:
 		 #shape OR shape2
-		offset=2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))
-		shape, shape2=[i for i in itertools.combinations(range(n_shapes),2)][h-offset]
+		offset=2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col
+		shape, shape2=shape_pairs[h-offset]
 		for i in range(n_colors):
 			hyp[n_colors*shape+i]=1
 			hyp[n_colors*shape2+i]=1
@@ -291,29 +316,38 @@ def p_hypothesis_theory(h, m, t):
 		if 0 <= h-2 < n_colors: #direct color hypotheses
 			return float(h-2 != m[0])/(n_colors-1)
 		elif 2+n_colors+n_shapes+2*n_colors*n_shapes <= h <\
-			 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2)):
+			 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col:
 			 #two color hypotheses
 			offset=2+n_colors+n_shapes+2*n_colors*n_shapes
-			color, color2=[i for i in itertools.combinations(range(n_colors),2)][h-offset]
+			color, color2=color_pairs[h-offset]
 			return float(color!=m[0] and color2!=m[0])/\
-					(scipy.misc.comb(n_colors,2)-(n_colors-1))
+					(n_comb_2col-(n_colors-1))
 		else:
 			return 0
 
 	elif t==10: #NOT match shape
 		if 0 <= h-2-n_colors < n_shapes: 
 			return float(h-2-n_colors != m[1])/(n_shapes-1)
-		elif 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))\
+		elif 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col\
 			 <= h <\
-			 2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))+\
-			 +int(scipy.misc.comb(n_shapes,2)):
+			 2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col+\
+			 +n_comb_2sha:
 			 #two color hypotheses
-			offset=2+n_colors+n_shapes+2*n_colors*n_shapes+int(scipy.misc.comb(n_colors,2))
-			shape, shape2=[i for i in itertools.combinations(range(n_shapes),2)][h-offset]
+			offset=2+n_colors+n_shapes+2*n_colors*n_shapes+n_comb_2col
+			shape, shape2=shape_pairs[h-offset]
 			return float(shape!=m[1] and shape2!=m[1])/\
-					(scipy.misc.comb(n_shapes,2)-(n_shapes-1))
+					(n_comb_2sha-(n_shapes-1))
 		else:
 			return 0
 
 	elif t==11: #INDEPENDENT
 		return 1./n_hypotheses
+
+
+
+
+
+produce_all_hypotheses()
+
+
+
