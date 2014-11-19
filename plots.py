@@ -140,12 +140,12 @@ def plot_epsilons(model, kind='hist'):
 def main():
 	#plot_entropy()
 	#model='hypfull'
-	model='jointfull'
-	#model='theoryfull'
+	#model='jointfull'
+	model='theoryfull'
 	
 
-	plot_sequential(model,4,True)
-	#plot_sequential(model,4,False)
+	#plot_sequential(model,4,True)
+	plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
 	#model='theory'

@@ -27,7 +27,7 @@ def main(player, n):
 	#n_r_theo=parameters.n_r_theo
 	n_r_random=parameters.n_r_random
 	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
-	epsilons=[0.001]
+	#epsilons=[0.001]
 	#epsilons=[0.002, 0.003, 0.004, 0.006, 0.007, 0.008, 0.009]
 	#epsilons=[0.006]
 

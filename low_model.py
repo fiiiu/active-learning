@@ -73,8 +73,8 @@ def p_hypothesis_theorydata(h, m, t, d=[]):
 	"CHECKED"
 	dm=parse_data(d)
 	di=dm[machines.index(m)]
-	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data(di,m)
-
+	#return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data(di,m)
+	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data_theory(di,m,t)
 
 def p_data(d, m):
 	"CHECKED"
@@ -147,6 +147,14 @@ def p_theory(t): #flat prior: argument ignored
 # 			hyp_lik+=p_data_hypothesis(d, h, m)*p_hypothesis_theory(h, m, t)
 # 		lik*=hyp_lik
 # 	return lik
+
+def p_data_theory(d, m, t):
+	"""for single machine"""
+	prob=0
+	for h in singleh_space:
+		prob+=p_data_hypothesis(d,h,m)*p_hypothesis_theory(h,m,t)
+	return prob
+
 
 def p_data_theory(d, t):
 	"""UNNORMALIZED --CHECKED"""
