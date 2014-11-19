@@ -6,9 +6,10 @@ import scipy.stats
 
 
 output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
-today='141118/'
+today='141119/'
 #batch='ep-0.05/'
-data_directory=output_directory+today#+batch
+batch='varyep/'
+data_directory=output_directory+today+batch
 	
 
 
@@ -100,9 +101,9 @@ def plot_sequential(model, n, scatter=False):
 
 def plot_epsilons(model, kind='hist'):
 	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
-	epsilons=[0.002, 0.003, 0.004, 0.007, 0.008, 0.009]
-	epsilons=[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009]
-	tru=2
+	#epsilons=[0.002, 0.003, 0.004, 0.007, 0.008, 0.009]
+	#epsilons=[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009]
+	tru=1
 
 	for i,epsilon in enumerate(epsilons):
 		filename=model+'-'+str(tru)+'_tru-20'+'_rreal-'+str(epsilon)+'.txt'
@@ -137,20 +138,47 @@ def plot_epsilons(model, kind='hist'):
 	plt.show()
 
 
+
+def plot_varyepsilons(model,n):
+	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
+	#epsilons=[0.002, 0.003, 0.004, 0.007, 0.008, 0.009]
+	#epsilons=[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009]
+	for tru in range(1,n+1):
+		plt.subplot(np.ceil(float(n+1))/2,2,tru, title='N actions: {0}'.format(tru))
+		
+		ts=np.zeros(len(epsilons))
+		ps=np.zeros(len(epsilons))
+
+		for i,epsilon in enumerate(epsilons):
+			filename=model+'-'+str(tru)+'_tru-20'+'_rreal-'+str(epsilon)+'.txt'
+			#fulldata=np.loadtxt(data_directory+today+filename)
+			fulldata=np.loadtxt(data_directory+filename)
+			print data_directory+filename
+			stats=scipy.stats.ttest_rel((fulldata[:,1]-fulldata[:,0]), (fulldata[:,2]-fulldata[:,0]))
+			ts[i]=stats[0]
+			ps[i]=stats[1]	
+
+		plt.plot(epsilons, ts, 'b-o')
+		plt.plot(epsilons, ps, 'r-s')
+	plt.show()
+
+
 def main():
 	#plot_entropy()
 	#model='hypfull'
 	#model='jointfull'
-	model='theoryfull'
+	#model='theoryfull'
 	
 
 	#plot_sequential(model,4,True)
-	plot_sequential(model,4,False)
+	#plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
-	#model='theory'
+	model='theory'
 	#plot_epsilons(model, 'hist')
 	#plot_epsilons(model, 'scatter')
+
+	plot_varyepsilons(model,2)
 
 if __name__ == '__main__':
 	main()
