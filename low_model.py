@@ -74,7 +74,7 @@ def p_hypothesis_theorydata(h, m, t, d=[]):
 	dm=parse_data(d)
 	di=dm[machines.index(m)]
 	#return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data(di,m)
-	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data_theory(di,m,t)
+	return p_hypothesis_theory(h,m,t)*p_data_hypothesis(di,h,m)/p_data_theory_single(di,m,t)
 
 def p_data(d, m):
 	"CHECKED"
@@ -148,7 +148,7 @@ def p_theory(t): #flat prior: argument ignored
 # 		lik*=hyp_lik
 # 	return lik
 
-def p_data_theory(d, m, t):
+def p_data_theory_single(d, m, t):
 	"""for single machine"""
 	prob=0
 	for h in singleh_space:
