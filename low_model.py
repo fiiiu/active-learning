@@ -62,7 +62,7 @@ def p_data_action(datapoint, action, prev_data=[]):
 			for h in singleh_space:
 				pda+=p_singledata_hypothesis(datapoint,h,machine)*\
 				 	 p_hypothesis_theorydata(h,machine,t,prev_data)*\
-					 p_theory_data(t,prev_data, normalized=True)				
+					 p_theory_data(t,prev_data)#, normalized=True) I don't need to normalize, this gives an extra constant				
 				 
 		return pda
 	else:
