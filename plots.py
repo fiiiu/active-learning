@@ -9,7 +9,7 @@ output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
 today='141119/'
 #batch='ep-0.05/'
 batch='varyep/'
-data_directory=output_directory+today+batch
+data_directory=output_directory+today#+batch
 	
 
 
@@ -58,12 +58,14 @@ def plot_truncated_eig(n):
 	plt.show()
 
 def plot_sequential(model, n, scatter=False):	
+	plt.figure(figsize=(12,8))
 	for i in range(1,n+1):
 		#filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
 		filename=model+'-'+str(i)+'_tru-20'+'_rreal.txt'
 		#fulldata=np.loadtxt(data_directory+today+filename)
 		fulldata=np.loadtxt(data_directory+filename)
 		#print data_directory+filename
+
 		plt.subplot(np.ceil(float(n+1))/2,2,i, title='N actions: {0}'.format(i))
 		#plt.suptitle('{0}'.format(i))
 		if scatter:
@@ -80,10 +82,13 @@ def plot_sequential(model, n, scatter=False):
 			plt.xlim([0, m1])
 			plt.ylim([0, m2])
 
-			if i==1:
-				print "{0} action, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
-			else:
-				print "{0} actions, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
+			# if i==1:
+			# 	print "{0} action, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
+			# else:
+			# 	print "{0} actions, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
+		
+			print '{0:.3f} & {1:.3f}'.format(stats[0],stats[1])
+
 		else:			
 			#plt.ylim([0, 43])
 			#plt.xlim([0,0.5])
@@ -100,6 +105,8 @@ def plot_sequential(model, n, scatter=False):
 
 
 def plot_epsilons(model, kind='hist'):
+	plt.figure(figsize=(12,8))
+	data_directory=output_directory+today#+batch
 	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
 	#epsilons=[0.002, 0.003, 0.004, 0.007, 0.008, 0.009]
 	#epsilons=[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009]
@@ -140,11 +147,13 @@ def plot_epsilons(model, kind='hist'):
 
 
 def plot_varyepsilons(model,n):
+	plt.figure(figsize=(12,8))
+	data_directory=output_directory+today+batch
 	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
 	#epsilons=[0.002, 0.003, 0.004, 0.007, 0.008, 0.009]
 	#epsilons=[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009]
 	for tru in range(1,n+1):
-		plt.subplot(np.ceil(float(n+1))/2,2,tru, title='N actions: {0}'.format(tru))
+		ax=plt.subplot(np.ceil(float(n+1))/2,2,tru, title='N actions: {0}'.format(tru))
 		
 		ts=np.zeros(len(epsilons))
 		ps=np.zeros(len(epsilons))
@@ -158,8 +167,12 @@ def plot_varyepsilons(model,n):
 			ts[i]=stats[0]
 			ps[i]=stats[1]	
 
-		plt.plot(epsilons, ts, 'b-o')
-		plt.plot(epsilons, ps, 'r-s')
+		plt.plot([epsilons[0],epsilons[-1]],[0,0], 'k:')
+		plt.plot(epsilons, ts, 'g-o')
+		plt.plot(epsilons, ps, 'm-s')
+		plt.xlabel('epsilon')
+		plt.ylabel('t, p')
+		ax.xaxis.set_label_coords(1.05, -0.1)
 	plt.show()
 
 
@@ -178,7 +191,7 @@ def main():
 	#plot_epsilons(model, 'hist')
 	#plot_epsilons(model, 'scatter')
 
-	plot_varyepsilons(model,2)
+	plot_varyepsilons(model,4)
 
 if __name__ == '__main__':
 	main()

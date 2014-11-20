@@ -18,7 +18,7 @@ import random
 
 def main(player, n):
 	
-	random.seed(0)
+	#random.seed(0)
 	starttime=time.clock()
 	data=Data.Data()
 	data.read(astext=False)
@@ -27,13 +27,13 @@ def main(player, n):
 	#n_r_theo=parameters.n_r_theo
 	n_r_random=parameters.n_r_random
 	epsilons=[0.001, 0.005, 0.01, 0.05, 0.1, 0.25]
-	#epsilons=[0.001]
+	epsilons=[0.25]#001]
 	#epsilons=[0.002, 0.003, 0.004, 0.006, 0.007, 0.008, 0.009]
 	#epsilons=[0.006]
 
 	for epsilon in epsilons:
 		entropy_gains.model.epsilon=epsilon
-		eg=np.zeros(len(data.get_kids()[:n_kids]))
+		#eg=np.zeros(len(data.get_kids()[:n_kids]))
 		
 		if player in ['theory', 'joint', 'hypotheses']:
 
@@ -45,6 +45,7 @@ def main(player, n):
 
 			k=0
 			for ki,kid in enumerate(data.get_kids()[:n_kids]):
+			#for ki,kid in enumerate(data.get_kids()[5:6]):
 				if data.get_kid_nactions(kid)<truncate:
 					continue
 				
@@ -59,7 +60,7 @@ def main(player, n):
 					ol=learners.JointLearner()
 				elif player=='hypotheses':
 					ol=learners.HypothesesLearner()
-				
+
 				olaction=ol.choose_action(kidseq[:truncate-1])
 				olactions.append(olaction)
 				yokedseq=kidseq[:-1]+[Datapoint.Datapoint(olaction, False)]#this False is generic, shouldn't be taken into account
