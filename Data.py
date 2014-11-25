@@ -6,12 +6,15 @@ import parameters
 class Data():
 
 	def __init__(self):
-		self.filename=parameters.directory+'Data/corrected_CPF2_110614.csv'
+		self.filename=parameters.directory+'Data/CPF2_Transcribed112114-CSV.csv'
+		
+		#self.filename=parameters.directory+'Data/corrected_CPF2_110614.csv'
 		
 		#self.filename=parameters.directory+'Data/CPF2_Transcribed110614CSV.csv'
 		#self.filename=parameters.directory+'Data/CPF2_Transcribed110414-3CSV.csv'
 		
 		self.data={}
+		self.data2={}
 
 	def read(self, filter=True, astext=True):
 		with open(self.filename, 'r') as datafile:
@@ -19,12 +22,16 @@ class Data():
 			for row in filereader:
 				valid_data=[]
 				previous_entry=''
-				for entry in row[2:]:
+				for entry in row[5:]:
 					if entry!='' and entry!='::': #the '::' is for one ?wrong entry in the data
 						if (filter and entry!=previous_entry) or not filter:
 							valid_data.append(self.parse(entry, astext))
 					previous_entry=entry
 				self.data[row[0]]=valid_data
+				if astext:
+					self.data2[row[0]]=(row[3], row[4])
+				else:
+					self.data2[row[0]]=(float(row[3]),float(row[4]))
 
 
 	def parse(self, entry, text=True):
