@@ -39,17 +39,13 @@ class ActiveLearner(object):
 		maxratio=0
 		astars=[]
 
-		if stage=='a':
-			possible_actions=world.possible_actions_phase2a()
-		elif stage=='b':
-			possible_actions=world.possible_actions_phase2b()
+		selector={'a': world.possible_actions_phase2a, 'b': world.possible_actions_phase2b}
+		possible_actions=selector[stage]()
 
 		for a in possible_actions:
 			dt=world.make_forced_action(a,True)
 			df=world.make_forced_action(a,False)
-			print 'go!'
 			pt=model.p_data_action(dt,a,prev_data)
-			print 'two!'
 			pf=model.p_data_action(df,a,prev_data)
 			print a, pt, pf, pt/pf
 			this_ratio=pt/pf

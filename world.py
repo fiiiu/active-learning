@@ -36,10 +36,10 @@ n_shapes=len(shapes)
 n_machines=len(machines)
 
 # #unrunnable:
-colors=[0,1,2,3,4,5]
-shapes=[0,1,2,3,4,5]
-n_colors=len(colors)
-n_shapes=len(shapes)
+# colors=[0,1,2,3,4,5]
+# shapes=[0,1,2,3,4,5]
+# n_colors=len(colors)
+# n_shapes=len(shapes)
 # machines=[(2,0), (1,1), (0,2), (5,3), (4,4), (3,5)]
 # n_machines=len(machines)
 

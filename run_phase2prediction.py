@@ -16,12 +16,12 @@ tl=learners.TheoryLearner()
 successes=np.empty((len(data.get_kids()),2))
 #model.epsilon=0.25
 
-phase='b'
+phase='a'
 for k,kid in enumerate(data.get_kids()):
 	
 	taction=tl.choose_action_phase2(phase, data.get_index_experience(k))
 	dp=world.make_action(taction, data.condition[kid])
-	
+
 	if phase=='a':
 		ksuc=data.data2[kid][0]
 	elif phase=='b':
