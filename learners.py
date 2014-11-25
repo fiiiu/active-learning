@@ -3,6 +3,7 @@ import random
 import utils
 import world
 import entropy_gains
+import low_model as model
 
 
 class ActiveLearner(object):
@@ -32,6 +33,37 @@ class ActiveLearner(object):
 		#		break
 		self.experience.append(world.make_action(choice))
 		return choice
+
+
+	def choose_action_phase2(self, stage, prev_data):
+		maxratio=0
+		astars=[]
+
+		if stage=='a':
+			possible_actions=world.possible_actions_phase2a()
+		elif stage=='b':
+			possible_actions=world.possible_actions_phase2b()
+
+		for a in possible_actions:
+			dt=world.make_forced_action(a,True)
+			df=world.make_forced_action(a,False)
+			print 'go!'
+			pt=model.p_data_action(dt,a,prev_data)
+			print 'two!'
+			pf=model.p_data_action(df,a,prev_data)
+			print a, pt, pf, pt/pf
+			this_ratio=pt/pf
+			if this_ratio > maxratio:
+				astars=[a]
+				maxratio=this_ratio
+			elif this_ratio == maxratio:
+				astars.append(a)
+
+		#print astars
+		choice=random.choice(astars)
+		return choice
+
+
 
 	def play(self, n_actions):
 		for i in range(n_actions):

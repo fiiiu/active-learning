@@ -25,13 +25,23 @@ shapes=[0,1,2]
 machines=[(2,0), (1,1), (0,2)]
 available_toys=[(2,1), (0,0), (1,2)]
 
+phase2a_toys=[(2,2),(1,0),(0,1)]
+
+phase2b_toys=[(5,4),(3,3),(4,5)]
+phase2b_machines=[(5,3),(4,4),(3,5)]
+
 
 n_colors=len(colors)
 n_shapes=len(shapes)
 n_machines=len(machines)
 
-condition='color'
-
+# #unrunnable:
+colors=[0,1,2,3,4,5]
+shapes=[0,1,2,3,4,5]
+n_colors=len(colors)
+n_shapes=len(shapes)
+# machines=[(2,0), (1,1), (0,2), (5,3), (4,4), (3,5)]
+# n_machines=len(machines)
 
 def possible_data(action):
 	return [Datapoint.Datapoint(action, False), Datapoint.Datapoint(action, True)]
@@ -39,11 +49,21 @@ def possible_data(action):
 def possible_actions():
 	return [(t,m) for t in available_toys for m in machines]
 
-def make_action(action):
-	if condition=='color':
+def possible_actions_phase2a():
+	return [(t,m) for t in phase2a_toys for m in machines]	
+
+def possible_actions_phase2b():
+	return [(t,m) for t in phase2b_toys for m in phase2b_machines]	
+
+
+def make_action(action, condition):
+	if condition=='C':
 		return Datapoint.Datapoint(action, action[0][0]==action[1][0])
-	elif condition=='shape':
+	elif condition=='S':
 		return Datapoint.Datapoint(action, action[0][1]==action[1][1])
+
+def make_forced_action(action, result):
+	return Datapoint.Datapoint(action, result)
 
 
 def translate_clause(clause):

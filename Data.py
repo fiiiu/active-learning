@@ -15,6 +15,7 @@ class Data():
 		
 		self.data={}
 		self.data2={}
+		self.condition={}
 
 	def read(self, filter=True, astext=True):
 		with open(self.filename, 'r') as datafile:
@@ -32,6 +33,7 @@ class Data():
 					self.data2[row[0]]=(row[3], row[4])
 				else:
 					self.data2[row[0]]=(float(row[3]),float(row[4]))
+				self.condition[row[0]]=row[1]
 
 
 	def parse(self, entry, text=True):

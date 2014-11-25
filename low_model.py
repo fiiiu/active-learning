@@ -25,6 +25,7 @@ n_hypotheses=2+world.n_colors+world.n_shapes+2*world.n_colors*world.n_shapes+\
 t_space=range(n_theories)
 singleh_space=range(n_hypotheses)
 
+#print n_hypotheses**world.n_machines*n_theories
 temp=[singleh_space]*world.n_machines
 fullh_space=list(itertools.product(*[singleh_space]*world.n_machines))
 
@@ -32,7 +33,6 @@ th_space=[(t, h) for t in t_space for h in fullh_space]
 
 #hypotheses_produced=False
 shypotheses=np.zeros((n_hypotheses,n_colors*n_shapes))
-
 
 
 #print len(fullh_space)
