@@ -31,7 +31,7 @@ class ActiveLearner(object):
 		#		break
 		#	elif choice!=prev_data[-1].action:
 		#		break
-		self.experience.append(world.make_action(choice))
+		#self.experience.append(world.make_action(choice))
 		return choice
 
 
@@ -108,4 +108,40 @@ class HypothesesLearner(ActiveLearner):
 	def expected_final_entropy(self, action, data=None):
 		return entropy_gains.hypotheses_expected_final_entropy(action, data)
 
-	
+
+class ActivePlayer():
+
+	#def __init__(self):
+		#self.experience=[]
+
+	def choose_action(self, prev_data=[]):
+		#mingain=1000
+		maxprob=0
+		astars=[]
+		for a in world.possible_actions():
+			if len(prev_data)>0:
+				if a==prev_data[-1].action:
+					continue
+			#this_gain=self.expected_final_entropy(a, prev_data)
+			this_prob=self.success_probability(a, prev_data)
+			if this_prob > maxprob:
+				astars=[a]
+				maxprob=this_prob
+				#mingain=this_gain
+			#elif this_gain == mingain:
+			elif this_prob == maxprob:
+				astars.append(a)
+		choice=random.choice(astars)
+		#self.experience.append(world.make_action(choice))
+		return choice
+
+
+	def success_probability(self, action, prev_data=[]):
+
+		data_no, data_yes=world.possible_data(action)
+		p_yes=model.p_data_action(data_yes, action, prev_data)
+		p_no=model.p_data_action(data_no, action, prev_data)
+		
+		return p_yes/(p_yes+p_no)
+
+
